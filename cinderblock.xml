@@ -14,5 +14,6 @@
 		<supports os="msw" />	
 		<headerPattern>src/*.h</headerPattern>
 		<sourcePattern>src/*.cpp</sourcePattern>
+		<includePath system="false">src</includePath>
 	</block>
 </cinder>
