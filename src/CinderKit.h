@@ -3,6 +3,7 @@
 #include "cinder/Cinder.h"
 #include "cinder/Color.h"
 #include "cinder/Rand.h"
+#include "cinder/Utilities.h"
 #include "cinder/app/App.h"
 
 #include "boost/uuid/uuid.hpp"
