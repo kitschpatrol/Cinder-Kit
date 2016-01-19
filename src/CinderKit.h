@@ -45,8 +45,16 @@ static std::string getUUIDString() {
 }
 
 // Returns a string that represents the code that would have been used to generate the value
-std::string toCodeString(ci::vec2 value) {
+static std::string toCodeString(ci::vec2 value) {
 	return "ci::vec2(" + ci::toString(value.x) + " ," + ci::toString(value.y) + ")";
+}
+
+static std::string toCodeString(ci::Rectf value) {
+	return "ci::Rectf(" +												//
+				 ci::toString(value.getX1()) + ", " + //
+				 ci::toString(value.getY1()) + ", " + //
+				 ci::toString(value.getX2()) + ", " + //
+				 ci::toString(value.getY2()) + ")";
 }
 
 // From Reza Ali's Cinder UI
