@@ -44,39 +44,45 @@ static std::string getUUIDString() {
 	return boost::uuids::to_string(getUUID());
 }
 
-// Returns a string that represents the code that would have been used to generate the value
-static std::string toCodeString(ci::vec2 value) {
-	return "ci::vec2(" + ci::toString(value.x) + " ," + ci::toString(value.y) + ")";
-}
-
-static std::string toCodeString(ci::Rectf value) {
-	return "ci::Rectf(" +												//
-				 ci::toString(value.getX1()) + ", " + //
-				 ci::toString(value.getY1()) + ", " + //
-				 ci::toString(value.getX2()) + ", " + //
-				 ci::toString(value.getY2()) + ")";
-}
-
 // From Reza Ali's Cinder UI
 template <typename T>
 std::string toString(T value, int precision, int width, char fill) {
 	std::ostringstream out;
-	out << std::fixed << std::setfill(fill) << std::setw(width) << std::setprecision(precision) << value;
+	out << std::fixed << std::setfill(fill) << std::setw(width) << std::setprecision(precision)
+			<< ((std::abs<T>(value) < ((1.0 / pow(10.0, precision + 1)) * 5.0)) ? 0.0 : value);
 	return out.str();
 }
 
 template <typename T>
 std::string toString(T value, int precision, char fill) {
 	std::ostringstream out;
-	out << std::fixed << std::setfill(fill) << std::setprecision(precision) << value;
+	out << std::fixed << std::setfill(fill) << std::setprecision(precision) << ((std::abs<T>(value) < ((1.0 / pow(10.0, precision + 1)) * 5.0)) ? 0.0 : value);
 	return out.str();
 }
 
 template <typename T>
 std::string toString(T value, int precision) {
 	std::ostringstream out;
-	out << std::fixed << std::setfill('0') << std::setprecision(precision) << value;
+	out << std::fixed << std::setfill('0') << std::setprecision(precision) << ((std::abs<T>(value) < ((1.0 / pow(10.0, precision + 1)) * 5.0)) ? 0.0 : value);
 	return out.str();
+}
+
+static int codeStringPrecision = 4;
+static int codeStringPadWith = 4; // does not work?
+
+// Returns a string that represents the code that would have been used to generate the value
+static std::string toCodeString(ci::vec2 value) {
+
+	return "ci::vec2(" + kp::kit::toString(value.x, codeStringPrecision, codeStringPadWith, '0') + " ," +
+				 kp::kit::toString(value.y, codeStringPrecision, codeStringPadWith, '0') + ")";
+}
+
+static std::string toCodeString(ci::Rectf value) {
+	return "ci::Rectf(" +																																					//
+				 kp::kit::toString(value.getX1(), codeStringPrecision, codeStringPadWith, '0') + ", " + //
+				 kp::kit::toString(value.getY1(), codeStringPrecision, codeStringPadWith, '0') + ", " + //
+				 kp::kit::toString(value.getX2(), codeStringPrecision, codeStringPadWith, '0') + ", " + //
+				 kp::kit::toString(value.getY2(), codeStringPrecision, codeStringPadWith, '0') + ")";
 }
 }
 } // namespace kp::kit
