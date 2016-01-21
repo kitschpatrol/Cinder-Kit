@@ -2,9 +2,12 @@
 
 #include "cinder/Cinder.h"
 #include "cinder/Color.h"
+#include "cinder/Json.h"
 #include "cinder/Rand.h"
 #include "cinder/Utilities.h"
 #include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
 
 #include "boost/uuid/uuid.hpp"
 #include "boost/uuid/uuid_generators.hpp"
@@ -13,8 +16,27 @@
 #define KP_WATCH(VARIABLE_TO_WATCH) (CI_LOG_V(#VARIABLE_TO_WATCH << ": " << VARIABLE_TO_WATCH));
 #define KP_LOG_FUNCTION (CI_LOG_V(__PRETTY_FUNCTION__ << " on thread " << std::this_thread::get_id));
 
+// namespace glm {
+//// template <class T>
+//// std::ostream &operator<<(std::ostream &out, const glm::tvec2<T> &vec) {
+////	out << vec.x << " " << vec.y;
+////	return out;
+////}
+//
+// template <class T>
+// std::istream &operator>>(std::istream &in, glm::tvec2<T> &vec) {
+//	std::string s(std::istreambuf_iterator<char>(stream), {});
+//
+//	if (in.good() && in.ignore(256, ' ').good())
+//		in >> vec.y;
+//	return in;
+//}
+//}
+
 namespace kp {
 namespace kit {
+
+// Serializations
 
 static float roundTo(float value, float roundStep) {
 	int distance = fmod(value, roundStep);
@@ -87,5 +109,38 @@ static std::string toCodeString(ci::Rectf value) {
 				 kp::kit::toString(value.getX2(), codeStringPrecision, codeStringPadWith, '0') + ", " + //
 				 kp::kit::toString(value.getY2(), codeStringPrecision, codeStringPadWith, '0') + ")";
 }
+
+// there must be a better place / way
+
+// Pairs... todo figure out how to overload this template without renaming
+template <typename T, typename U>
+static ci::JsonTree toJson(std::string key, std::pair<T, U> value) {
+	ci::JsonTree object = ci::JsonTree::makeObject(key);
+	object.addChild(ci::JsonTree("first", value.first));
+	object.addChild(ci::JsonTree("second", value.second));
+	return object;
+}
+
+// hmm have to specify return type manually
+//		std::pair<float, float> test = kp::kit::fromJsonPair<float, float>(json);
+// http://stackoverflow.com/questions/26081814/can-c-templates-infer-return-type
+template <typename T, typename U>
+static std::pair<T, U> fromJson(const ci::JsonTree &json, bool flag = false) {
+	return std::make_pair(json["first"].getValue<T>(), json["second"].getValue<U>());
+}
+
+// Vectors
+static ci::JsonTree toJson(std::string key, ci::vec2 value) {
+	ci::JsonTree object = ci::JsonTree::makeObject(key);
+	object.addChild(ci::JsonTree("x", value.x));
+	object.addChild(ci::JsonTree("y", value.y));
+	return object;
+}
+
+static ci::vec2 fromJson(const ci::JsonTree &json) {
+	return ci::vec2(json["x"].getValue<float>(), json["y"].getValue<float>());
+}
+
+//
 }
 } // namespace kp::kit
