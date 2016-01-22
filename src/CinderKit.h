@@ -141,6 +141,5 @@ static ci::vec2 fromJson(const ci::JsonTree &json) {
 	return ci::vec2(json["x"].getValue<float>(), json["y"].getValue<float>());
 }
 
-//
-}
-} // namespace kp::kit
+} // namespace kit
+} // namespace kp
