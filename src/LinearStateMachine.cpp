@@ -6,6 +6,8 @@
 
 #include "LinearStateMachine.h"
 
+#include "cinder/app/App.h"
+#include "cinder/Cinder.h"
 #include "cinder/Log.h"
 
 namespace kp {
