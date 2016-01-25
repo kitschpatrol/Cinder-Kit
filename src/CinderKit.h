@@ -57,7 +57,8 @@ static ci::vec2 roundTo(const ci::vec2 &point, float roundStep) {
 
 static float getWave(float frequencySeconds = 1.0, float minAmplitude = 0.0, float maxAmplitude = 1.0, float timeOffset = 0.0) {
 	ci::math<float>::sin(1.0);
-	return ci::lmap(sinf(((static_cast<float>(ci::app::getElapsedSeconds()) + timeOffset) / frequencySeconds) * M_PI * 2), -1.0f, 1.0f, minAmplitude, maxAmplitude);
+	return ci::lmap(sinf(((static_cast<float>(ci::app::getElapsedSeconds()) + timeOffset) / frequencySeconds) * M_PI * 2), -1.0f, 1.0f, minAmplitude,
+									maxAmplitude);
 }
 
 static ci::Color getRandomColor() {
@@ -133,6 +134,13 @@ static std::pair<T, U> fromJson(const ci::JsonTree &json, bool flag = false) {
 }
 
 // Vectors
+static ci::JsonTree toJson(ci::vec2 value) {
+	ci::JsonTree object = ci::JsonTree::makeObject();
+	object.addChild(ci::JsonTree("x", value.x));
+	object.addChild(ci::JsonTree("y", value.y));
+	return object;
+}
+
 static ci::JsonTree toJson(std::string key, ci::vec2 value) {
 	ci::JsonTree object = ci::JsonTree::makeObject(key);
 	object.addChild(ci::JsonTree("x", value.x));
