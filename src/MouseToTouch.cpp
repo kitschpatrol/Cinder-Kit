@@ -37,6 +37,11 @@ void MouseToTouch::setIsEnabled(bool value) {
 	mIsEnabled = value;
 }
 
+bool MouseToTouch::getIsEnabled()
+{
+	return mIsEnabled;
+}
+
 void MouseToTouch::onMouseDownEvent(ci::app::MouseEvent event) {
 	if (event.isLeftDown()) {
 		mLastMousePosition = event.getPos();
@@ -64,14 +69,15 @@ void MouseToTouch::onMouseDragEvent(ci::app::MouseEvent event) {
 }
 
 void MouseToTouch::onMouseUpEvent(ci::app::MouseEvent event) {
-	if (event.isLeftDown()) {
+	// On, isLeftDown is false on mouse up.
+	//if (event.isLeftDown()) {
 		ci::app::TouchEvent::Touch touch = ci::app::TouchEvent::Touch(event.getPos(), mLastMousePosition, -1, ci::app::getElapsedSeconds(), nullptr);
 		std::vector<ci::app::TouchEvent::Touch> touches;
 		touches.push_back(touch);
 
 		ci::app::TouchEvent touchEvent = ci::app::TouchEvent(ci::app::WindowRef(), touches);
 		ci::app::getWindow()->emitTouchesEnded(&touchEvent);
-	}
+	//}
 }
 
 } // namespace app

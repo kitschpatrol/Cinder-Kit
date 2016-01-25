@@ -7,6 +7,7 @@
 #pragma once
 
 #include "cinder/Cinder.h"
+#include "cinder/Signals.h"
 
 namespace kp {
 namespace kit {
@@ -50,8 +51,8 @@ protected:
 	LinearStateMachine();
 
 private:
-	const float transitionInAmount = 1.0;
-	const float transitionOutAmount = 1.0;
+	float transitionInAmount = 1.0;
+	float transitionOutAmount = 1.0;
 
 	float mPreviousLinearValue = -1.0;
 	float mLinearValue = -1.0;
