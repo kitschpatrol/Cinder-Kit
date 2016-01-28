@@ -71,7 +71,7 @@ void LinearStateMachine::setActiveRanges(std::vector<Range> ranges) {
 	}
 }
 
-LinearStateMachine::SignalStateProgress &LinearStateMachine::getSigalStateProgress() {
+LinearStateMachine::SignalStateProgress &LinearStateMachine::getSignalStateProgress() {
 	return mSignalStateProgress;
 }
 

@@ -42,7 +42,7 @@ public:
 	const State getCurrentState() const;
 	float getProgress() const;
 
-	SignalStateProgress &getSigalStateProgress();
+	SignalStateProgress &getSignalStateProgress();
 	SignalStateChange &getSignalStateChange();
 
 	static std::string getStringFromState(LinearStateMachine::State state);
