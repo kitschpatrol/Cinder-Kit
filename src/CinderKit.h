@@ -65,8 +65,8 @@ static float getWave(float frequencySeconds = 1.0, float minAmplitude = 0.0, flo
 									maxAmplitude);
 }
 
-static ci::Color getRandomColor() {
-	return ci::Color(ci::CM_HSV, ci::Rand::randFloat(), 0.5f, 1.0f);
+static ci::Color getRandomColor(float saturation = 1.0f, float brightness = 1.0f) {
+	return ci::Color(ci::CM_HSV, ci::Rand::randFloat(), saturation, brightness);
 }
 
 static boost::uuids::uuid getUUID() {
