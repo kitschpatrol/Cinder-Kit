@@ -9,6 +9,8 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 
+#include "cinder/cairo/Cairo.h"
+
 #include <complex>
 
 #include "boost/algorithm/string.hpp"
@@ -180,6 +182,23 @@ static ci::vec2 polarToCartesian(float radius, float theta) {
 static ci::vec2 cartesianToPolar(ci::vec2 cartesian) {
 	return ci::vec2(glm::length(cartesian), std::atan2(cartesian.x, cartesian.y));
 }
+
+namespace cairo {
+
+static void appendPolyline(ci::cairo::Context &context, const ci::PolyLine2f &polyline) {
+	if (!polyline.getPoints().empty()) {
+		context.moveTo(polyline.getPoints()[0]);
+
+		for (size_t p = 1; p < polyline.getPoints().size(); ++p) {
+			context.lineTo(polyline.getPoints()[p]);
+		}
+
+		if (polyline.isClosed()) {
+			context.closePath();
+		}
+	}
+}
+} // namespace cairo
 
 } // namespace kit
 } // namespace kp
