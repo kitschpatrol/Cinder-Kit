@@ -9,6 +9,8 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 
+#include <complex>
+
 #include "boost/algorithm/string.hpp"
 #include "boost/archive/iterators/base64_from_binary.hpp"
 #include "boost/archive/iterators/binary_from_base64.hpp"
@@ -168,6 +170,15 @@ static std::string encode64(const std::string &val) {
 	using It = base64_from_binary<transform_width<std::string::const_iterator, 6, 8>>;
 	auto tmp = std::string(It(std::begin(val)), It(std::end(val)));
 	return tmp.append((3 - val.size() % 3) % 3, '=');
+}
+
+static ci::vec2 polarToCartesian(float radius, float theta) {
+	std::complex<double> cartesian = std::polar(radius, theta);
+	return ci::vec2(cartesian.real(), cartesian.imag());
+}
+
+static ci::vec2 cartesianToPolar(ci::vec2 cartesian) {
+	return ci::vec2(glm::length(cartesian), std::atan2(cartesian.x, cartesian.y));
 }
 
 } // namespace kit
