@@ -13,6 +13,7 @@
 
 #include <complex>
 
+
 #include "boost/algorithm/string.hpp"
 #include "boost/archive/iterators/base64_from_binary.hpp"
 #include "boost/archive/iterators/binary_from_base64.hpp"
@@ -71,6 +72,10 @@ static float getWave(float frequencySeconds = 1.0, float minAmplitude = 0.0, flo
 
 static ci::Color getRandomColor(float saturation = 1.0f, float brightness = 1.0f) {
 	return ci::Color(ci::CM_HSV, ci::Rand::randFloat(), saturation, brightness);
+}
+
+static ci::vec2 getRandomPoint(float xMax = 1.0f, float yMax = 1.0f) {
+	return ci::vec2(ci::Rand::randFloat() * xMax, ci::Rand::randFloat() * yMax);
 }
 
 static boost::uuids::uuid getUUID() {
