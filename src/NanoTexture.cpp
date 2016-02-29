@@ -28,7 +28,19 @@ NanoTexture::~NanoTexture() {
 
 void NanoTexture::setup(float width, float height) {
 	// auto fboSize = mBounds.getSize() * getWindow()->getContentScale(); // TODO HIDPI
-	mFbo = ci::gl::Fbo::create(width, height, ci::gl::Fbo::Format().stencilBuffer());
+
+	// mip map...
+	ci::gl::Texture::Format textureFormat;
+	textureFormat.setMinFilter(GL_LINEAR_MIPMAP_NEAREST);
+	textureFormat.setMagFilter(GL_LINEAR);
+	textureFormat.enableMipmapping(true);
+
+	ci::gl::Fbo::Format fboFormat;
+	fboFormat.enableStencilBuffer();
+	fboFormat.setColorTextureFormat(textureFormat);
+	
+	mFbo = ci::gl::Fbo::create(width, height, fboFormat);
+
 	mCtx = std::make_shared<ci::nvg::Context>(ci::nvg::createContextGL()); // todo unique?
 }
 
