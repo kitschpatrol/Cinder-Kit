@@ -86,6 +86,13 @@ static std::string getUUIDString() {
 	return boost::uuids::to_string(getUUID());
 }
 
+static void drawCross(ci::vec2 position, float size, ci::ColorA color = ci::ColorA("magenta"), float lineWidth = 1.0) {
+	ci::gl::ScopedColor crossColor(color);
+	ci::gl::ScopedLineWidth crossLineWidth(lineWidth);
+	ci::gl::drawLine(position - ci::vec2(size, 0), position + ci::vec2(size, 0));
+	ci::gl::drawLine(position - ci::vec2(0, size), position + ci::vec2(0, size));
+}
+
 // From Reza Ali's Cinder UI
 template <typename T>
 std::string toString(T value, int precision, int width, char fill) {
