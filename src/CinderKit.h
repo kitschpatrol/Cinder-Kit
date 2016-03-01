@@ -9,6 +9,11 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 
+#include "cinder/cairo/Cairo.h"
+
+#include <complex>
+
+
 #include "boost/algorithm/string.hpp"
 #include "boost/archive/iterators/base64_from_binary.hpp"
 #include "boost/archive/iterators/binary_from_base64.hpp"
@@ -69,12 +74,23 @@ static ci::Color getRandomColor(float saturation = 1.0f, float brightness = 1.0f
 	return ci::Color(ci::CM_HSV, ci::Rand::randFloat(), saturation, brightness);
 }
 
+static ci::vec2 getRandomPoint(float xMax = 1.0f, float yMax = 1.0f) {
+	return ci::vec2(ci::Rand::randFloat() * xMax, ci::Rand::randFloat() * yMax);
+}
+
 static boost::uuids::uuid getUUID() {
 	return boost::uuids::random_generator()();
 }
 
 static std::string getUUIDString() {
 	return boost::uuids::to_string(getUUID());
+}
+
+static void drawCross(ci::vec2 position, float size, ci::ColorA color = ci::ColorA("magenta"), float lineWidth = 1.0) {
+	ci::gl::ScopedColor crossColor(color);
+	ci::gl::ScopedLineWidth crossLineWidth(lineWidth);
+	ci::gl::drawLine(position - ci::vec2(size, 0), position + ci::vec2(size, 0));
+	ci::gl::drawLine(position - ci::vec2(0, size), position + ci::vec2(0, size));
 }
 
 // From Reza Ali's Cinder UI
@@ -169,6 +185,32 @@ static std::string encode64(const std::string &val) {
 	auto tmp = std::string(It(std::begin(val)), It(std::end(val)));
 	return tmp.append((3 - val.size() % 3) % 3, '=');
 }
+
+static ci::vec2 polarToCartesian(float radius, float theta) {
+	std::complex<double> cartesian = std::polar(radius, theta);
+	return ci::vec2(cartesian.real(), cartesian.imag());
+}
+
+static ci::vec2 cartesianToPolar(ci::vec2 cartesian) {
+	return ci::vec2(glm::length(cartesian), std::atan2(cartesian.x, cartesian.y));
+}
+
+namespace cairo {
+
+static void appendPolyline(ci::cairo::Context &context, const ci::PolyLine2f &polyline) {
+	if (!polyline.getPoints().empty()) {
+		context.moveTo(polyline.getPoints()[0]);
+
+		for (size_t p = 1; p < polyline.getPoints().size(); ++p) {
+			context.lineTo(polyline.getPoints()[p]);
+		}
+
+		if (polyline.isClosed()) {
+			context.closePath();
+		}
+	}
+}
+} // namespace cairo
 
 } // namespace kit
 } // namespace kp
