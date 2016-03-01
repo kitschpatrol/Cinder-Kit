@@ -37,6 +37,7 @@ public:
 	// (4, 4) would transition in from 3->4, and out from 4->5
 	const std::vector<Range> &getActiveRanges() const;
 	void setActiveRanges(std::vector<Range> ranges);
+	void setActiveRange(Range ranges); // convenience for setting single range
 
 	const State getPreviousState() const;
 	const State getCurrentState() const;

@@ -71,6 +71,14 @@ void LinearStateMachine::setActiveRanges(std::vector<Range> ranges) {
 	}
 }
 
+void LinearStateMachine::setActiveRange(Range range) {
+	if (!((mActiveRanges.size() == 1) && (mActiveRanges[0] == range))) {
+		mActiveRanges.clear();
+		mActiveRanges.push_back(range);
+		// todo refresh state?
+	}
+}
+
 LinearStateMachine::SignalStateProgress &LinearStateMachine::getSignalStateProgress() {
 	return mSignalStateProgress;
 }
