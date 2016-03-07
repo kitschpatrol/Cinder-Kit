@@ -200,7 +200,7 @@ static ci::vec2 cartesianToPolar(ci::vec2 cartesian) {
 	return ci::vec2(glm::length(cartesian), std::atan2(cartesian.x, cartesian.y));
 }
 
-static std::string getMachineName() {
+static std::string getMachineName(bool nameOnly = false) {
 	char Name[150];
 
 #ifdef CINDER_MSW
@@ -221,7 +221,18 @@ static std::string getMachineName() {
 	gethostname(Name, 150);
 #endif
 
-	return std::string(Name);
+	std::string name = std::string(Name);
+
+	if (nameOnly) {
+		// skip domains after the dot
+		std::size_t pos = name.find(".");
+
+		if (pos != std::string::npos) {
+			name = name.substr(0, pos);
+		}
+	}
+
+	return name;
 }
 
 } // namespace kit
