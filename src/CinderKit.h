@@ -25,6 +25,14 @@
 #define KP_WATCH_COUT(VARIABLE_TO_WATCH) (std::cout << #VARIABLE_TO_WATCH << ": " << VARIABLE_TO_WATCH << std::endl);
 #define KP_LOG_FUNCTION_COUT (std::cout << __PRETTY_FUNCTION__ << " on thread " << std::this_thread::get_id << std::endl);
 
+// for machine name resolution
+#ifdef CINDER_MSW
+#include <Windows.h>
+#include <tchar.h>
+#else
+#include <unistd.h>
+#endif
+
 // namespace glm {
 //// template <class T>
 //// std::ostream &operator<<(std::ostream &out, const glm::tvec2<T> &vec) {
@@ -190,6 +198,30 @@ static ci::vec2 polarToCartesian(float radius, float theta) {
 
 static ci::vec2 cartesianToPolar(ci::vec2 cartesian) {
 	return ci::vec2(glm::length(cartesian), std::atan2(cartesian.x, cartesian.y));
+}
+
+static std::string getMachineName() {
+	char Name[150];
+
+#ifdef CINDER_MSW
+	int i = 0;
+
+	TCHAR infoBuf[150];
+	DWORD bufCharCount = 150;
+	memset(Name, 0, 150);
+	if (GetComputerName(infoBuf, &bufCharCount)) {
+		for (i = 0; i < 150; i++) {
+			Name[i] = infoBuf[i];
+		}
+	} else {
+		strcpy(Name, "Unknown_Host_Name");
+	}
+#else
+	memset(Name, 0, 150);
+	gethostname(Name, 150);
+#endif
+
+	return std::string(Name);
 }
 
 } // namespace kit
