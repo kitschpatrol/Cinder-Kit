@@ -16,6 +16,9 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
+namespace kp {
+namespace kit {
+
 EasyHttpRef EasyHttp::create() {
 	return EasyHttpRef(new EasyHttp())->shared_from_this();
 }
@@ -195,3 +198,6 @@ void EasyHttp::verboseLog(std::string message) {
 		CI_LOG_V(message);
 	}
 }
+
+} // namespace kit
+} // namespace kp

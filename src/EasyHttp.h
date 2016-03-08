@@ -25,6 +25,9 @@
 #include "HttpResponse.h"
 #include "TcpClient.h"
 
+namespace kp {
+namespace kit {
+
 typedef std::shared_ptr<class EasyHttp> EasyHttpRef;
 
 class EasyHttp : public std::enable_shared_from_this<EasyHttp> {
@@ -76,3 +79,6 @@ private:
 
 	void verboseLog(std::string message);
 };
+
+} // namespace kit
+} // namespace kp
