@@ -101,6 +101,10 @@ void EasyHttp::request(std::string url, std::function<void(std::string response)
 void EasyHttp::onClientConnect(TcpSessionRef session) {
 	mHttpResponse = HttpResponse();
 	mSession = session;
+
+	// TODO set timeout?
+	// http://stackoverflow.com/questions/292997/can-you-set-so-rcvtimeo-and-so-sndtimeo-socket-options-in-boost-asio
+
 	verboseLog("Connected");
 
 	// - Request
