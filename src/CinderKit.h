@@ -53,6 +53,18 @@
 namespace kp {
 namespace kit {
 
+// Color to int
+template <typename T>
+static uint32_t colorToInt(ci::ColorT<T> color) {
+	return (color.r << 16) + (color.g << 8) + color.b;
+}
+
+// RGBA... hmm
+template <typename T>
+static uint32_t colorToInt(ci::ColorAT<T> color) {
+	return (color.r << 24) < (color.g << 16) + (color.b << 8) + color.a;
+}
+
 // Serializations
 
 static float roundTo(float value, float roundStep) {
