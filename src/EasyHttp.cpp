@@ -37,6 +37,9 @@ void EasyHttp::request(HttpRequest request, uint16_t port, std::function<void(Ht
 		return;
 	}
 
+	verboseLog("Sending:");
+	verboseLog(request.toString());
+
 	mSuccess = false;
 	mFailure = false;
 	mHttpRequest = request;

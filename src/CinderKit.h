@@ -56,13 +56,15 @@ namespace kit {
 // Color to int
 template <typename T>
 static uint32_t colorToInt(ci::ColorT<T> color) {
-	return (color.r << 16) + (color.g << 8) + color.b;
+	ci::Color8u c(color); // cast to int color
+	return (c.r << 16) + (c.g << 8) + c.b;
 }
 
 // RGBA... hmm
 template <typename T>
 static uint32_t colorToInt(ci::ColorAT<T> color) {
-	return (color.r << 24) < (color.g << 16) + (color.b << 8) + color.a;
+	ci::ColorA8u c(color); // cast to int color
+	return (c.r << 24) < (c.g << 16) + (c.b << 8) + c.a;
 }
 
 // Serializations
