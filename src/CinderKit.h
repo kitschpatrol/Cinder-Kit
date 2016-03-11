@@ -9,8 +9,6 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 
-#include <complex>
-
 #include "boost/algorithm/string.hpp"
 #include "boost/archive/iterators/base64_from_binary.hpp"
 #include "boost/archive/iterators/binary_from_base64.hpp"
@@ -18,6 +16,12 @@
 #include "boost/uuid/uuid.hpp"
 #include "boost/uuid/uuid_generators.hpp"
 #include "boost/uuid/uuid_io.hpp"
+#include <chrono>
+#include <complex>
+#include <ctime>		// struct std::tm
+#include <iomanip>	// std::get_time
+#include <iostream> // std::cin, std::cout
+#include <sstream>
 
 #define KP_WATCH(VARIABLE_TO_WATCH) (CI_LOG_V(#VARIABLE_TO_WATCH << ": " << VARIABLE_TO_WATCH));
 #define KP_LOG_FUNCTION (CI_LOG_V(__PRETTY_FUNCTION__ << " on thread " << std::this_thread::get_id));
@@ -52,6 +56,22 @@
 
 namespace kp {
 namespace kit {
+
+// http://en.cppreference.com/w/cpp/io/manip/get_time
+static std::time_t stringToTime(const std::string timeString, const std::string format) {
+	std::tm tm = {};
+	std::stringstream ss(timeString.c_str());
+	ss >> std::get_time(&tm, format.c_str());
+	return std::mktime(&tm);
+}
+
+// http://en.cppreference.com/w/cpp/io/manip/put_time
+static std::string timeToString(const std::time_t time, const std::string format) {
+	std::tm *tm = std::localtime(&time);
+	std::stringstream ss;
+	ss << std::put_time(tm, format.c_str());
+	return ss.str();
+}
 
 // Color to int
 template <typename T>
