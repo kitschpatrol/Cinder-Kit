@@ -6,6 +6,8 @@
 
 #include "EasyHttp.h"
 
+#include "cinder/Cinder.h"
+#include "cinder/app/App.h"
 #include "cinder/Log.h"
 #include "cinder/Utilities.h"
 
