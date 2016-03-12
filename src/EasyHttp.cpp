@@ -33,7 +33,7 @@ EasyHttp::~EasyHttp() {
 
 void EasyHttp::request(HttpRequest request, uint16_t port, std::function<void(HttpResponse response)> success, std::function<void(std::string error)> failure) {
 	if (mSession && mSession->getSocket()->is_open()) {
-		verboseLog("Request in progress.");
+		CI_LOG_E("Request in progress. Aborting");
 		return;
 	}
 
@@ -60,8 +60,7 @@ void EasyHttp::request(HttpRequest request, uint16_t port, std::function<void(Ht
 	mClient->connect(mHttpRequest.getHeader("Host"), port);
 }
 
-void EasyHttp::request(std::string url, std::function<void(std::string response)> success, std::function<void(std::string error)> failure) {
-
+void EasyHttp::request(std::string url, std::string verb, std::function<void(std::string response)> success, std::function<void(std::string error)> failure) {
 	// split host and request
 	// should use something more serious here
 	// https://tools.ietf.org/html/rfc3986#appendix-B
@@ -83,7 +82,7 @@ void EasyHttp::request(std::string url, std::function<void(std::string response)
 		path = "/";
 	}
 
-	HttpRequest httpRequest = HttpRequest("GET", path, HttpVersion::HTTP_1_0);
+	HttpRequest httpRequest = HttpRequest(verb, path, HttpVersion::HTTP_1_0);
 	httpRequest.setHeader("Host", host);
 	httpRequest.setHeader("Accept", "*/*");
 	httpRequest.setHeader("Connection", "close");
@@ -91,12 +90,16 @@ void EasyHttp::request(std::string url, std::function<void(std::string response)
 	// have to do this for lifetime...?
 	mBasicSuccessCallback = success;
 	request(httpRequest, 80,
-					[&](HttpResponse response) {
+					[=](HttpResponse response) {
 						// Wrap the callback
 						mBasicSuccessCallback(HttpResponse::bufferToString(mHttpResponse.getBody()));
-						mBasicSuccessCallback = nullptr;
+						// mBasicSuccessCallback = nullptr;
 					},
 					failure);
+}
+
+void EasyHttp::request(std::string url, std::function<void(std::string response)> success, std::function<void(std::string error)> failure) {
+	request(url, "GET", success, failure);
 }
 
 // ------------
@@ -193,11 +196,11 @@ void EasyHttp::conclude() {
 	// TODo move this elsewhere?
 	if (mSuccess && mSuccessCallback) {
 		mSuccessCallback(mHttpResponse);
+		// mSuccessCallback = nullptr;
 	} else if (mFailure && mFailureCallback) {
 		mFailureCallback("Something happened.");
+		// mFailureCallback = nullptr;
 	}
-	mSuccessCallback = nullptr;
-	mFailureCallback = nullptr;
 }
 
 void EasyHttp::verboseLog(std::string message) {

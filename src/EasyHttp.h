@@ -37,6 +37,7 @@ public:
 
 	// quick and brain-dead get to port 80
 	void request(std::string url, std::function<void(std::string response)> success, std::function<void(std::string error)> failure = nullptr);
+	void request(std::string url, std::string verb, std::function<void(std::string response)> success, std::function<void(std::string error)> failure = nullptr);
 
 	// more flexible
 	void request(HttpRequest request, uint16_t port, std::function<void(HttpResponse response)> success,
