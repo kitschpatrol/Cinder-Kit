@@ -57,6 +57,11 @@
 namespace kp {
 namespace kit {
 
+template <typename T>
+static float perceptualColorDistance(ci::ColorT<T> a, ci::ColorT<T> b) {
+	return glm::distance(a.get(ci::CM_HSV), b.get(ci::CM_HSV));
+}
+
 // http://en.cppreference.com/w/cpp/io/manip/get_time
 static std::time_t stringToTime(const std::string timeString, const std::string format) {
 	std::tm tm = {};
