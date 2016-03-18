@@ -1,22 +1,14 @@
 // EasyHttp.cpp
 // SmartMuseumBasic
 //
-// Created by Eric Mika on 3/7/16.
+// Created by Eric Mika on 3/18/16.
 //
 
-#include "EasyHttp.h"
-
-#include "cinder/Cinder.h"
-#include "cinder/app/App.h"
 #include "cinder/Log.h"
-#include "cinder/Utilities.h"
 
-#include "HttpInterface.h"
+#include "EasyHttp.h"
+#include <algorithm>
 #include <regex>
-
-using namespace ci;
-using namespace ci::app;
-using namespace std;
 
 namespace kp {
 namespace kit {
@@ -26,43 +18,41 @@ EasyHttpRef EasyHttp::create() {
 }
 
 EasyHttp::EasyHttp() {
-	verboseLog("EasyHttp Created");
+	CI_LOG_V("EasyHttp Created");
 }
 
 EasyHttp::~EasyHttp() {
-	verboseLog("EasyHttp Destroyed");
+	CI_LOG_V("EasyHttp Destroyed");
 }
 
-void EasyHttp::request(HttpRequest request, uint16_t port, std::function<void(HttpResponse response)> success, std::function<void(std::string error)> failure) {
-	if (mSession && mSession->getSocket()->is_open()) {
-		CI_LOG_E("Request in progress. Aborting");
-		return;
-	}
+EasyHttpSessionRef EasyHttp::request(HttpRequest request, uint16_t port, std::function<void(HttpResponse response)> success,
+																		 std::function<void(std::string error)> failure) {
+	EasyHttpSessionRef sessionRef = EasyHttpSession::create();
 
-	verboseLog("Sending:");
-	verboseLog(request.toString());
+	// This class keeps sessionref alive longe enough to return
+	addSession(sessionRef);
 
-	mSuccess = false;
-	mFailure = false;
-	mHttpRequest = request;
+	// since we know this class maintains the sessionref, a weak pointer is passed into lambda to avoid retain cycle
+	std::weak_ptr<kp::kit::EasyHttpSession> weakSessionRef = sessionRef;
 
-	mSuccessCallback = success;
-	mFailureCallback = failure;
+	sessionRef->request(request, port,
+											[weakSessionRef, success, this](HttpResponse response) {
+												// std::forward?
+												success(response);
+												removeSession(weakSessionRef.lock());
+											},
+											[weakSessionRef, failure, this](std::string error) {
+												// std::forward?
+												failure(error);
+												removeSession(weakSessionRef.lock());
+											});
 
-	// Use cinder's ASIO instance
-	mClient = TcpClient::create(App::get()->io_service());
-	mClient->connectConnectEventHandler(&EasyHttp::onClientConnect, this);
-	mClient->connectErrorEventHandler(&EasyHttp::onClientError, this);
-	mClient->connectResolveEventHandler(&EasyHttp::onClientResolve, this);
-
-	verboseLog("Connecting");
-
-	CI_LOG_V("Connecting to : " << mHttpRequest.getHeader("Host"));
-
-	mClient->connect(mHttpRequest.getHeader("Host"), port);
+	// sessionRef->request(url, success, failure);
+	return sessionRef;
 }
 
-void EasyHttp::request(std::string url, std::string verb, std::function<void(std::string response)> success, std::function<void(std::string error)> failure) {
+EasyHttpSessionRef EasyHttp::request(std::string url, std::string verb, std::function<void(std::string response)> success,
+																		 std::function<void(std::string error)> failure) {
 	// split host and request
 	// should use something more serious here
 	// https://tools.ietf.org/html/rfc3986#appendix-B
@@ -70,15 +60,15 @@ void EasyHttp::request(std::string url, std::string verb, std::function<void(std
 	std::smatch sm; // same as std::match_results<string::const_iterator> sm;
 	std::regex_match(url, sm, e);
 
-	string host;
-	if (string(sm[4]).size() > 0) {
+	std::string host;
+	if (std::string(sm[4]).size() > 0) {
 		host = sm[4];
 	} else {
 		CI_LOG_E("Invalud URL");
 	}
 
-	string path;
-	if (string(sm[5]).size() > 0) {
+	std::string path;
+	if (std::string(sm[5]).size() > 0) {
 		path = sm[5];
 	} else {
 		path = "/";
@@ -90,124 +80,35 @@ void EasyHttp::request(std::string url, std::string verb, std::function<void(std
 	httpRequest.setHeader("Connection", "close");
 
 	// have to do this for lifetime...?
-	mBasicSuccessCallback = success;
-	request(httpRequest, 80,
-					[=](HttpResponse response) {
-						// Wrap the callback
-						mBasicSuccessCallback(HttpResponse::bufferToString(mHttpResponse.getBody()));
-						// mBasicSuccessCallback = nullptr;
-					},
-					failure);
+	return request(httpRequest, 80,
+								 [=](HttpResponse response) {
+									 // Wrap the callback
+									 success(HttpResponse::bufferToString(response.getBody()));
+									 // mBasicSuccessCallback = nullptr;
+								 },
+								 failure);
 }
 
-void EasyHttp::request(std::string url, std::function<void(std::string response)> success, std::function<void(std::string error)> failure) {
-	request(url, "GET", success, failure);
+// Trivial GET
+EasyHttpSessionRef EasyHttp::request(std::string url, std::function<void(std::string response)> success, std::function<void(std::string error)> failure) {
+	return request(url, "GET", success, failure);
 }
 
-// ------------
+// Session list maintenance
 
-void EasyHttp::onClientConnect(TcpSessionRef session) {
-	mHttpResponse = HttpResponse();
-	mSession = session;
-
-	// TODO set timeout?
-	// http://stackoverflow.com/questions/292997/can-you-set-so-rcvtimeo-and-so-sndtimeo-socket-options-in-boost-asio
-
-	verboseLog("Connected");
-
-	// - Request
-	//	- response
-	//	- error
-
-	mSession->connectCloseEventHandler(&EasyHttp::onSessionClose, this);
-	mSession->connectErrorEventHandler(&EasyHttp::onSessionError, this);
-	mSession->connectReadCompleteEventHandler(&EasyHttp::onSessionReadComplete, this);
-	mSession->connectReadEventHandler(&EasyHttp::onSessionRead, this);
-	mSession->connectWriteEventHandler(&EasyHttp::onSessionWrite, this);
-	mSession->write(mHttpRequest.toBuffer());
+void EasyHttp::addSession(EasyHttpSessionRef session) {
+	CI_LOG_V("Adding session");
+	mSessions.push_back(session);
 }
 
-void EasyHttp::onClientResolve() {
-	verboseLog("Endpoint resolved");
-}
+void EasyHttp::removeSession(EasyHttpSessionRef session) {
+	CI_LOG_V("Removing session");
+	std::vector<EasyHttpSessionRef>::iterator position = std::find(mSessions.begin(), mSessions.end(), session);
 
-void EasyHttp::cancel() {
-	CI_LOG_E("Cancellation not yet implemented");
-	//	TODO best approach...
-	//	if (mSession && mSession->getSocket()->is_open()) {
-	//		mSession->close();
-	//		verboseLog("Canceling by closing session");
-	//	} else {
-	//		mClient->getResolver()->cancel(); // hmm
-	//		verboseLog("Canceling by cancelling resolver");
-	//	}
-}
-
-void EasyHttp::onSessionWrite(size_t bytesTransferred) {
-	verboseLog(toString(bytesTransferred) + " bytes written");
-	mSession->read();
-}
-
-void EasyHttp::onSessionRead(ci::BufferRef buffer) {
-	verboseLog(toString(buffer->getSize()) + " bytes read");
-
-	if (!mHttpResponse.hasHeader()) {
-		mHttpResponse.parseHeader(HttpResponse::bufferToString(buffer));
-		buffer = HttpResponse::removeHeader(buffer);
-	}
-	mHttpResponse.append(buffer);
-
-	mSession->read();
-}
-
-void EasyHttp::onSessionReadComplete() {
-	verboseLog("Response: \n" + toString(mHttpResponse));
-
-	mSuccess = true;
-	mSession->close();
-}
-
-void EasyHttp::onSessionClose() {
-	verboseLog("Disconnected");
-	conclude();
-}
-
-void EasyHttp::onClientError(string err, size_t bytesTransferred) {
-	string text = "Client Error";
-	if (!err.empty()) {
-		text += ": " + err;
-	}
-
-	mFailure = true;
-	conclude();
-	CI_LOG_E(text);
-}
-
-void EasyHttp::onSessionError(string err, size_t bytesTransferred) {
-	string text = "Session Error";
-	if (!err.empty()) {
-		text += ": " + err;
-	}
-
-	mFailure = true;
-	conclude();
-	CI_LOG_E(text);
-}
-
-void EasyHttp::conclude() {
-	// TODo move this elsewhere?
-	if (mSuccess && mSuccessCallback) {
-		mSuccessCallback(mHttpResponse);
-		// mSuccessCallback = nullptr;
-	} else if (mFailure && mFailureCallback) {
-		mFailureCallback("Something happened.");
-		// mFailureCallback = nullptr;
-	}
-}
-
-void EasyHttp::verboseLog(std::string message) {
-	if (isAbsurdlyVerboseLoggingEnabled) {
-		CI_LOG_V(message);
+	if (position != mSessions.end()) {
+		mSessions.erase(position);
+	} else {
+		CI_LOG_E("Session not found for deletion!");
 	}
 }
 
