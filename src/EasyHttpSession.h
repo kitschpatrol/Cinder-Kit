@@ -37,16 +37,15 @@ public:
 	static EasyHttpSessionRef create();
 	~EasyHttpSession();
 
-	void request(HttpRequest request, uint16_t port, std::function<void(HttpResponse response)> success,
-							 std::function<void(std::string error)> failure = nullptr);
-	void cancel();
-
+	void cancel(); // not implemented
 	bool isAbsurdlyVerboseLoggingEnabled = false;
 
-protected:
-	EasyHttpSession();
-
 private:
+	// Only EasyHttp can create EasyHttpSessions via friend association
+	EasyHttpSession();
+	void request(HttpRequest request, uint16_t port, std::function<void(HttpResponse response)> success,
+							 std::function<void(std::string error)> failure = nullptr);
+
 	HttpRequest mHttpRequest;
 	HttpResponse mHttpResponse;
 

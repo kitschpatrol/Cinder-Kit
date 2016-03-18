@@ -26,16 +26,16 @@ public:
 	EasyHttpSessionRef request(std::string url, std::string verb, std::function<void(std::string response)> success,
 														 std::function<void(std::string error)> failure = nullptr);
 
-	// more flexible
+	// More flexibility
 	EasyHttpSessionRef request(HttpRequest request, uint16_t port, std::function<void(HttpResponse response)> success,
 														 std::function<void(std::string error)> failure = nullptr);
-
-	std::vector<EasyHttpSessionRef> mSessions;
-
+	
+	int getNumActiveSessions() const;
 protected:
 	EasyHttp();
 
 private:
+	std::vector<EasyHttpSessionRef> mSessions;
 	void addSession(EasyHttpSessionRef session);
 	void removeSession(EasyHttpSessionRef session);
 };

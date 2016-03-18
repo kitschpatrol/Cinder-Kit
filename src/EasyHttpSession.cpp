@@ -159,10 +159,8 @@ void EasyHttpSession::conclude() {
 	// TODo move this elsewhere?
 	if (mSuccess && mSuccessCallback) {
 		mSuccessCallback(mHttpResponse);
-		// mSuccessCallback = nullptr;
 	} else if (mFailure && mFailureCallback) {
-		mFailureCallback("Something happened.");
-		// mFailureCallback = nullptr;
+		mFailureCallback("Something bad happened.");
 	}
 }
 

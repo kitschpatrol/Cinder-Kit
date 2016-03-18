@@ -64,7 +64,7 @@ EasyHttpSessionRef EasyHttp::request(std::string url, std::string verb, std::fun
 	if (std::string(sm[4]).size() > 0) {
 		host = sm[4];
 	} else {
-		CI_LOG_E("Invalud URL");
+		CI_LOG_E("Invalid URL");
 	}
 
 	std::string path;
@@ -79,17 +79,14 @@ EasyHttpSessionRef EasyHttp::request(std::string url, std::string verb, std::fun
 	httpRequest.setHeader("Accept", "*/*");
 	httpRequest.setHeader("Connection", "close");
 
-	// have to do this for lifetime...?
 	return request(httpRequest, 80,
-								 [=](HttpResponse response) {
-									 // Wrap the callback
-									 success(HttpResponse::bufferToString(response.getBody()));
-									 // mBasicSuccessCallback = nullptr;
-								 },
-								 failure);
+								 [success](HttpResponse response) {														//
+									 success(HttpResponse::bufferToString(response.getBody())); //
+								 },																														//
+								 failure);																										//
 }
 
-// Trivial GET
+// Trivial GET wrapper
 EasyHttpSessionRef EasyHttp::request(std::string url, std::function<void(std::string response)> success, std::function<void(std::string error)> failure) {
 	return request(url, "GET", success, failure);
 }
@@ -102,6 +99,7 @@ void EasyHttp::addSession(EasyHttpSessionRef session) {
 }
 
 void EasyHttp::removeSession(EasyHttpSessionRef session) {
+	// Remove reference to the session. Usually this deletes the session.
 	CI_LOG_V("Removing session");
 	std::vector<EasyHttpSessionRef>::iterator position = std::find(mSessions.begin(), mSessions.end(), session);
 
@@ -110,6 +108,10 @@ void EasyHttp::removeSession(EasyHttpSessionRef session) {
 	} else {
 		CI_LOG_E("Session not found for deletion!");
 	}
+}
+
+int EasyHttp::getNumActiveSessions() const {
+	return mSessions.size();
 }
 
 } // namespace kit
