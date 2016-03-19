@@ -21,8 +21,8 @@
 #include <ctime>		// struct std::tm
 #include <iomanip>	// std::get_time
 #include <iostream> // std::cin, std::cout
+#include <map>
 #include <sstream>
-
 #define KP_WATCH(VARIABLE_TO_WATCH) (CI_LOG_V(#VARIABLE_TO_WATCH << ": " << VARIABLE_TO_WATCH));
 #define KP_LOG_FUNCTION (CI_LOG_V(__PRETTY_FUNCTION__ << " on thread " << std::this_thread::get_id));
 
@@ -56,6 +56,7 @@
 
 namespace kp {
 namespace kit {
+
 
 template <typename T>
 static float perceptualColorDistance(ci::ColorT<T> a, ci::ColorT<T> b) {
