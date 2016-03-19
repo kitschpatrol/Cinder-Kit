@@ -34,8 +34,9 @@ static void callOnBackgroundThread(std::function<void()> func, std::function<voi
 // don't capture references
 static void callAfterDelay(double delaySeconds, std::function<void()> callback) {
 	callOnBackgroundThread(
-			[delaySeconds]() {																													//
-				std::this_thread::sleep_for(std::chrono::duration<double>(delaySeconds)); //
+			[delaySeconds]() {					
+				// windows chokes on std::chrono::duration<double>(delaySeconds)
+				std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<long long>(delaySeconds / 1000.0f))); //
 			},
 			callback);
 };
