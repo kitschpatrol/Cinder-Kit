@@ -1,12 +1,6 @@
-// EasyHttp.cpp
-// SmartMuseumBasic
-//
-// Created by Eric Mika on 3/18/16.
-//
+#include "EasyHttp.h"
 
 #include "cinder/Log.h"
-
-#include "EasyHttp.h"
 #include <algorithm>
 #include <regex>
 
@@ -17,22 +11,15 @@ EasyHttpRef EasyHttp::create() {
 	return EasyHttpRef(new EasyHttp())->shared_from_this();
 }
 
-EasyHttp::EasyHttp() {
-	CI_LOG_V("EasyHttp Created");
-}
-
-EasyHttp::~EasyHttp() {
-	CI_LOG_V("EasyHttp Destroyed");
-}
-
-EasyHttpSessionRef EasyHttp::request(HttpRequest request, uint16_t port, std::function<void(HttpResponse response)> success,
+EasyHttpSessionRef EasyHttp::request(HttpRequest request, uint16_t port,								 //
+																		 std::function<void(HttpResponse response)> success, //
 																		 std::function<void(std::string error)> failure) {
 	EasyHttpSessionRef sessionRef = EasyHttpSession::create();
 
-	// This class keeps sessionref alive longe enough to return
+	// Keeps sessionref alive long enough to return
 	addSession(sessionRef);
 
-	// since we know this class maintains the sessionref, a weak pointer is passed into lambda to avoid retain cycle
+	// Avoid retain cycle
 	std::weak_ptr<kp::kit::EasyHttpSession> weakSessionRef = sessionRef;
 
 	sessionRef->request(request, port,
@@ -47,11 +34,11 @@ EasyHttpSessionRef EasyHttp::request(HttpRequest request, uint16_t port, std::fu
 												removeSession(weakSessionRef.lock());
 											});
 
-	// sessionRef->request(url, success, failure);
 	return sessionRef;
 }
 
-EasyHttpSessionRef EasyHttp::request(std::string url, std::string verb, std::function<void(std::string response)> success,
+EasyHttpSessionRef EasyHttp::request(std::string url, std::string verb,									//
+																		 std::function<void(std::string response)> success, //
 																		 std::function<void(std::string error)> failure) {
 	// split host and request
 	// should use something more serious here
@@ -64,7 +51,7 @@ EasyHttpSessionRef EasyHttp::request(std::string url, std::string verb, std::fun
 	if (std::string(sm[4]).size() > 0) {
 		host = sm[4];
 	} else {
-		CI_LOG_E("Invalid URL");
+		failure("Invalid URL");
 	}
 
 	std::string path;
@@ -86,8 +73,9 @@ EasyHttpSessionRef EasyHttp::request(std::string url, std::string verb, std::fun
 								 failure);																										//
 }
 
-// Trivial GET wrapper
-EasyHttpSessionRef EasyHttp::request(std::string url, std::function<void(std::string response)> success, std::function<void(std::string error)> failure) {
+EasyHttpSessionRef EasyHttp::request(std::string url,																		//
+																		 std::function<void(std::string response)> success, //
+																		 std::function<void(std::string error)> failure) {
 	return request(url, "GET", success, failure);
 }
 

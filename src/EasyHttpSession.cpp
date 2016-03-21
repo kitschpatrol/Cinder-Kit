@@ -1,17 +1,10 @@
-// EasyHttpSession.cpp
-// SmartMuseumBasic
-//
-// Created by Eric Mika on 3/7/16.
-//
-
 #include "EasyHttpSession.h"
 
+#include "HttpInterface.h"
 #include "cinder/Cinder.h"
 #include "cinder/Log.h"
 #include "cinder/Utilities.h"
 #include "cinder/app/App.h"
-
-#include "HttpInterface.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -27,15 +20,8 @@ EasyHttpSessionRef EasyHttpSession::create() {
 	return EasyHttpSessionRef(new EasyHttpSession())->shared_from_this();
 }
 
-EasyHttpSession::EasyHttpSession() {
-	CI_LOG_V("EasyHttpSession Created");
-}
-
-EasyHttpSession::~EasyHttpSession() {
-	CI_LOG_V("EasyHttpSession Destroyed");
-}
-
-void EasyHttpSession::request(HttpRequest request, uint16_t port, std::function<void(HttpResponse response)> success,
+void EasyHttpSession::request(HttpRequest request, uint16_t port,									//
+															std::function<void(HttpResponse response)> success, //
 															std::function<void(std::string error)> failure) {
 	if (mSession && mSession->getSocket()->is_open()) {
 		CI_LOG_E("Request in progress. Aborting. This should not be possible!");
@@ -59,7 +45,6 @@ void EasyHttpSession::request(HttpRequest request, uint16_t port, std::function<
 	mClient->connectResolveEventHandler(&EasyHttpSession::onClientResolve, this);
 
 	verboseLog("Connecting");
-
 	CI_LOG_V("Connecting to : " << mHttpRequest.getHeader("Host"));
 
 	mClient->connect(mHttpRequest.getHeader("Host"), port);
@@ -75,10 +60,6 @@ void EasyHttpSession::onClientConnect(TcpSessionRef session) {
 	// http://stackoverflow.com/questions/292997/can-you-set-so-rcvtimeo-and-so-sndtimeo-socket-options-in-boost-asio
 
 	verboseLog("Connected");
-
-	// - Request
-	//	- response
-	//	- error
 
 	mSession->connectCloseEventHandler(&EasyHttpSession::onSessionClose, this);
 	mSession->connectErrorEventHandler(&EasyHttpSession::onSessionError, this);

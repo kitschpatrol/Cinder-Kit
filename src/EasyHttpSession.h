@@ -1,22 +1,8 @@
-// EasyHttpSession.h
-// SmartMuseumBasic
+// EasyHttpSession
 //
-// Created by Eric Mika on 3/7/16.
-//
+// One instance of an HTTP request, managed by EasyHttp.
 
 #pragma once
-
-// For use with
-// https://github.com/BanTheRewind/Cinder-Protocol
-// and
-// https://github.com/BanTheRewind/Cinder-Asio
-
-// Example:
-// EasyHttpSessionRef EasyHttpSession = EasyHttpSession::create();
-// EasyHttpSession->request("http://example.com",
-//									 [&](std::string successResponse) { CI_LOG_V("Success!" << successResponse); },
-//                   [&](std::string failureResponse) { CI_LOG_V("Fail!" << failureResponse); }
-//                  );
 
 #include "cinder/Cinder.h"
 
@@ -35,21 +21,20 @@ class EasyHttpSession : public std::enable_shared_from_this<EasyHttpSession> {
 
 public:
 	static EasyHttpSessionRef create();
-	~EasyHttpSession();
 
 	void cancel(); // not implemented
 	bool isAbsurdlyVerboseLoggingEnabled = false;
 
 private:
 	// Only EasyHttp can create EasyHttpSessions via friend association
-	EasyHttpSession();
-	void request(HttpRequest request, uint16_t port, std::function<void(HttpResponse response)> success,
+	void request(HttpRequest request, uint16_t port,								 //
+							 std::function<void(HttpResponse response)> success, //
 							 std::function<void(std::string error)> failure = nullptr);
 
 	HttpRequest mHttpRequest;
 	HttpResponse mHttpResponse;
 
-	// precautions
+	// need something better than these flags...
 	bool mSuccess;
 	bool mFailure;
 
