@@ -1,11 +1,11 @@
-#include "coroutine.hpp"
+#include "CinderKitCoroutine.h"
 
 #include <thread>
 
 #cindlue "cinder/Log.h"
 
-namespace emilib {
-namespace cr {
+namespace kp {
+namespace kit {
 
 // This is thrown when the outer thread stop():s the coroutine.
 struct AbortException {};
@@ -162,5 +162,5 @@ void CoroutineSet::poll(double dt) {
 	}
 }
 
-} // namespace cr
-} // namespace emilib
+} // namespace kp
+} // namespace kit
