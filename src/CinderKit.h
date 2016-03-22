@@ -57,7 +57,6 @@
 namespace kp {
 namespace kit {
 
-
 template <typename T>
 static float perceptualColorDistance(ci::ColorT<T> a, ci::ColorT<T> b) {
 	return glm::distance(a.get(ci::CM_HSV), b.get(ci::CM_HSV));
@@ -111,8 +110,7 @@ static ci::vec2 roundTo(const ci::vec2 &point, float roundStep) {
 
 static float getWave(float frequencySeconds = 1.0, float minAmplitude = 0.0, float maxAmplitude = 1.0, float timeOffset = 0.0) {
 	ci::math<float>::sin(1.0);
-	return ci::lmap(sinf(((static_cast<float>(ci::app::getElapsedSeconds()) + timeOffset) / frequencySeconds) * M_PI * 2), -1.0f, 1.0f, minAmplitude,
-									maxAmplitude);
+	return ci::lmap(sinf(((static_cast<float>(ci::app::getElapsedSeconds()) + timeOffset) / frequencySeconds) * M_PI * 2), -1.0f, 1.0f, minAmplitude, maxAmplitude);
 }
 
 static ci::Color getRandomColor(float saturation = 1.0f, float brightness = 1.0f) {
@@ -142,8 +140,7 @@ static void drawCross(ci::vec2 position, float size, ci::ColorA color = ci::Colo
 template <typename T>
 std::string toString(T value, int precision, int width, char fill) {
 	std::ostringstream out;
-	out << std::fixed << std::setfill(fill) << std::setw(width) << std::setprecision(precision)
-			<< ((std::abs<T>(value) < ((1.0 / pow(10.0, precision + 1)) * 5.0)) ? 0.0 : value);
+	out << std::fixed << std::setfill(fill) << std::setw(width) << std::setprecision(precision) << ((std::abs<T>(value) < ((1.0 / pow(10.0, precision + 1)) * 5.0)) ? 0.0 : value);
 	return out.str();
 }
 
@@ -167,8 +164,7 @@ static int codeStringPadWith = 4; // does not work?
 // Returns a string that represents the code that would have been used to generate the value
 static std::string toCodeString(ci::vec2 value) {
 
-	return "ci::vec2(" + kp::kit::toString(value.x, codeStringPrecision, codeStringPadWith, '0') + " ," +
-				 kp::kit::toString(value.y, codeStringPrecision, codeStringPadWith, '0') + ")";
+	return "ci::vec2(" + kp::kit::toString(value.x, codeStringPrecision, codeStringPadWith, '0') + " ," + kp::kit::toString(value.y, codeStringPrecision, codeStringPadWith, '0') + ")";
 }
 
 static std::string toCodeString(ci::Rectf value) {

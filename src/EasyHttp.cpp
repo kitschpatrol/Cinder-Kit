@@ -61,6 +61,16 @@ EasyHttpSessionRef EasyHttp::request(std::string url, std::string verb,									
 		path = "/";
 	}
 
+	// Query
+	if (std::string(sm[7]).size() > 0) {
+		path += "?" + std::string(sm[7]);
+	}
+
+	// Fragment
+	// if (std::string(sm[9]).size() > 0) {
+	//	path += sm[9];
+	//}
+
 	HttpRequest httpRequest = HttpRequest(verb, path, HttpVersion::HTTP_1_0);
 	httpRequest.setHeader("Host", host);
 	httpRequest.setHeader("Accept", "*/*");
