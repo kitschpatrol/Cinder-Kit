@@ -13,18 +13,22 @@
 namespace kp {
 namespace kit {
 
+using namespace std;
+using namespace ci;
+using namespace ci::app;
+
 // some stuff from https://github.com/araid/Cinder-Async
 
 static int sIdCount;
-static std::map<int, std::shared_future<void>> sFutures;
+static map<int, shared_future<void>> sFutures;
 
-static void callOnBackgroundThread(std::function<void()> func, std::function<void()> callback) {
+static void callOnBackgroundThread(function<void()> func, function<void()> callback) {
 	int futureId = sIdCount++;
-	sFutures[futureId] = std::async(std::launch::async, [func, callback, futureId] {
-		// std::cout << "Calling from thread " << std::this_thread::get_id() << std::endl;
+	sFutures[futureId] = async(launch::async, [func, callback, futureId] {
+		// cout << "Calling from thread " << this_thread::get_id() << endl;
 		func();
 
-		ci::app::App::get()->dispatchAsync([callback, futureId] { // called on main thread
+		App::get()->dispatchAsync([callback, futureId] { // called on main thread
 			callback();
 			sFutures.erase(futureId);
 		});
@@ -32,11 +36,11 @@ static void callOnBackgroundThread(std::function<void()> func, std::function<voi
 };
 
 // don't capture references
-static void callAfterDelay(double delaySeconds, std::function<void()> callback) {
+static void callAfterDelay(double delaySeconds, function<void()> callback) {
 	callOnBackgroundThread(
-			[delaySeconds]() {					
-				// windows chokes on std::chrono::duration<double>(delaySeconds)
-				std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<long long>(delaySeconds * 1000.0f))); //
+			[delaySeconds]() {
+				// windows chokes on chrono::duration<double>(delaySeconds)
+				this_thread::sleep_for(chrono::milliseconds(static_cast<long long>(delaySeconds * 1000.0f))); //
 			},
 			callback);
 };
