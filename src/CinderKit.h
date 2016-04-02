@@ -78,6 +78,16 @@ static std::string timeToString(const std::time_t time, const std::string format
 	return ss.str();
 }
 
+static std::string secondsToHMS(double seconds) {
+	const int h = seconds / 60.0 / 60.0;
+	const int m = static_cast<long>(seconds / 60.0) % 60;
+	const int s = static_cast<long>(seconds) % 60;
+
+	std::stringstream ss;
+	ss << h << "h " << m << "m " << s << "s";
+	return ss.str();
+}
+
 // Color to int
 template <typename T>
 static uint32_t colorToInt(ci::ColorT<T> color) {
