@@ -4,9 +4,10 @@
 
 #pragma once
 
+#include "CinderAsio.h"
+
 #include "cinder/Cinder.h"
 
-#include "CinderAsio.h"
 #include "HttpRequest.h"
 #include "HttpResponse.h"
 #include "TcpClient.h"
