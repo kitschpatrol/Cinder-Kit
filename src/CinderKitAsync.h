@@ -35,6 +35,18 @@ static void callOnBackgroundThread(function<void()> func, function<void()> callb
 	});
 };
 
+// call "clean up" yourself. useful if you need to pass more stuff back to the main thread
+static void callOnBackgroundThreadManualDispatch(function<void()> func) {
+	int futureId = sIdCount++;
+
+	sFutures[futureId] = async(launch::async, [func, futureId] {
+		func();																 // needs to call back to the main thread on its own
+		App::get()->dispatchAsync([futureId] { // called on main thread
+			sFutures.erase(futureId);
+		});
+	});
+};
+
 // don't capture references
 static void callAfterDelay(double delaySeconds, function<void()> callback) {
 	callOnBackgroundThread(
