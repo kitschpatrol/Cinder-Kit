@@ -4,9 +4,10 @@
 
 #pragma once
 
+#include "CinderAsio.h"
+
 #include "cinder/Cinder.h"
 
-#include "CinderAsio.h"
 #include "HttpRequest.h"
 #include "HttpResponse.h"
 #include "TcpClient.h"
@@ -24,6 +25,9 @@ public:
 
 	void cancel(); // not implemented
 	bool isAbsurdlyVerboseLoggingEnabled = false;
+
+
+	~EasyHttpSession();
 
 private:
 	// Only EasyHttp can create EasyHttpSessions via friend association
