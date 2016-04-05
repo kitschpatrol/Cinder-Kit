@@ -26,9 +26,6 @@ public:
 	void cancel(); // not implemented
 	bool isAbsurdlyVerboseLoggingEnabled = false;
 
-
-	~EasyHttpSession();
-
 private:
 	// Only EasyHttp can create EasyHttpSessions via friend association
 	void request(HttpRequest request, uint16_t port,								 //

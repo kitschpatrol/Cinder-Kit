@@ -20,11 +20,6 @@ EasyHttpSessionRef EasyHttpSession::create() {
 	return EasyHttpSessionRef(new EasyHttpSession())->shared_from_this();
 }
 
-EasyHttpSession::~EasyHttpSession() {
-	CI_LOG_V("Destroying session");
-	//mClient
-}
-
 void EasyHttpSession::request(HttpRequest request, uint16_t port,									//
 															std::function<void(HttpResponse response)> success, //
 															std::function<void(std::string error)> failure) {
