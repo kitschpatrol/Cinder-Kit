@@ -246,39 +246,38 @@ static ci::vec2 cartesianToPolar(ci::vec2 cartesian) {
 	return ci::vec2(glm::length(cartesian), std::atan2(cartesian.x, cartesian.y));
 }
 
-static std::string getMachineName(bool nameOnly = false) {
-	char Name[150];
+static std::string getMachineName(bool includeDomain = false) {
+	char name[256];
+	std::memset(name, 0, 256);
 
 #ifdef CINDER_MSW
-	int i = 0;
-
-	TCHAR infoBuf[150];
-	DWORD bufCharCount = 150;
-	memset(Name, 0, 150);
-	if (GetComputerName(infoBuf, &bufCharCount)) {
-		for (i = 0; i < 150; i++) {
-			Name[i] = infoBuf[i];
+	TCHAR buffer[256] = TEXT("");
+	DWORD dwSize = sizeof(buffer);
+	COMPUTER_NAME_FORMAT nameFormat = includeDomain ? ComputerNamePhysicalDnsFullyQualified : ComputerNamePhysicalDnsHostname;
+	if (GetComputerNameEx(nameFormat, buffer, &dwSize)) {
+		for (int i = 0; i < dwSize; i++) {
+			name[i] = buffer[i];
 		}
 	} else {
-		strcpy(Name, "Unknown_Host_Name");
+		strcpy(name, "Unknown_Host_Name");
 	}
 #else
-	memset(Name, 0, 150);
-	gethostname(Name, 150);
+	memset(Name, 0, 256);
+	gethostname(Name, 256);
 #endif
 
-	std::string name = std::string(Name);
+	std::string nameString = std::string(name);
 
-	if (nameOnly) {
+	if (includeDomain) {
 		// skip domains after the dot
-		std::size_t pos = name.find(".");
+		std::size_t pos = nameString.find(".");
 
 		if (pos != std::string::npos) {
-			name = name.substr(0, pos);
+			nameString = nameString.substr(0, pos);
 		}
 	}
 
-	return name;
+	return nameString;
 }
 
 } // namespace kit
