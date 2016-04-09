@@ -262,8 +262,7 @@ static std::string getMachineName(bool includeDomain = false) {
 		strcpy(name, "Unknown_Host_Name");
 	}
 #else
-	memset(Name, 0, 256);
-	gethostname(Name, 256);
+	gethostname(name, 256);
 #endif
 
 	std::string nameString = std::string(name);
