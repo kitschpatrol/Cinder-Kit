@@ -2,7 +2,7 @@
 
 #include <thread>
 
-#cindlue "cinder/Log.h"
+#include "cinder/Log.h"
 
 namespace kp {
 namespace kit {
