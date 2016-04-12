@@ -28,6 +28,9 @@ void EasyHttpSession::request(HttpRequest request, uint16_t port,									//
 		return;
 	}
 
+
+	mStartTime = getElapsedSeconds();
+
 	verboseLog("Sending:");
 	verboseLog(request.toString());
 
@@ -139,8 +142,10 @@ void EasyHttpSession::onSessionError(string err, size_t bytesTransferred) {
 void EasyHttpSession::conclude() {
 	// TODo move this elsewhere?
 	if (mSuccess && mSuccessCallback) {
+		CI_LOG_V("Request to " << mHttpRequest.getUri() << " succeeded in " << (getElapsedSeconds() - mStartTime) << " seconds.");
 		mSuccessCallback(mHttpResponse);
 	} else if (mFailure && mFailureCallback) {
+		CI_LOG_V("Request to " << mHttpRequest.getUri() << " failed in " << (getElapsedSeconds() - mStartTime) << " seconds.");
 		mFailureCallback("Something bad happened.");
 	}
 }

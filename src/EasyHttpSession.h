@@ -27,6 +27,8 @@ public:
 	bool isAbsurdlyVerboseLoggingEnabled = false;
 
 private:
+	double mStartTime;
+
 	// Only EasyHttp can create EasyHttpSessions via friend association
 	void request(HttpRequest request, uint16_t port,								 //
 							 std::function<void(HttpResponse response)> success, //
