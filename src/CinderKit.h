@@ -204,6 +204,11 @@ static std::pair<T, U> fromJson(const ci::JsonTree &json, bool flag = false) {
 	return std::make_pair(json["first"].getValue<T>(), json["second"].getValue<U>());
 }
 
+template <typename T>
+static std::string pluralize(T count, std::string singular, std::string plural) {
+	return (count == 1) ? singular : plural;
+}
+
 // Vectors
 static ci::JsonTree toJson(ci::vec2 value) {
 	ci::JsonTree object = ci::JsonTree::makeObject();
