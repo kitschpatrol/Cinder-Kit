@@ -71,6 +71,27 @@ void LinearStateMachine::setActiveRanges(std::vector<Range> ranges) {
 	}
 }
 
+void LinearStateMachine::addActiveRange(Range range) {
+	// Extend existing range if possible
+	bool foundExistingRange = false;
+	int rangeIndex = 0;
+	for (const auto &existingRange : mActiveRanges) {
+		if (existingRange.second == range.first - 1) {
+			foundExistingRange = true;
+			break;
+		}
+		rangeIndex++;
+	}
+
+	if (foundExistingRange) {
+		// extend existing range
+		mActiveRanges[rangeIndex].second = range.first;
+	} else {
+		// add new range
+		mActiveRanges.push_back(range);
+	}
+}
+
 void LinearStateMachine::setActiveRange(Range range) {
 	if (!((mActiveRanges.size() == 1) && (mActiveRanges[0] == range))) {
 		mActiveRanges.clear();
@@ -101,7 +122,7 @@ float LinearStateMachine::getProgress() const {
 std::pair<LinearStateMachine::State, float> LinearStateMachine::calculateStateAndProgressForValue(float value) {
 	// Assume nothing's around
 	State state = State::STEADY_OUT;
-	float progress = 1.0;
+	float progress = 0.0;
 
 	for (const Range &range : mActiveRanges) {
 		// Are we in it?
@@ -115,7 +136,7 @@ std::pair<LinearStateMachine::State, float> LinearStateMachine::calculateStateAn
 			break;
 		} else if (value >= range.first && value <= range.second) {
 			// Steady in
-			progress = ci::lmap(value, range.first, range.second, 0.0f, 1.0f);
+			progress = 1.0; // ci::lmap(value, range.first, range.second, 0.0f, 1.0f);
 			state = State::STEADY_IN;
 			break;
 		} else if (value > range.second && value < rightEdge) {

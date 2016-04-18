@@ -39,6 +39,9 @@ public:
 	void setActiveRanges(std::vector<Range> ranges);
 	void setActiveRange(Range ranges); // convenience for setting single range
 
+	void addActiveRange(Range range); // convenience for accumulating ranges, automatically merges with existing
+	
+	
 	const State getPreviousState() const;
 	const State getCurrentState() const;
 	float getProgress() const;
