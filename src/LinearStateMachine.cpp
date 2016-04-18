@@ -35,7 +35,7 @@ void LinearStateMachine::setLinearValue(float value) {
 		mLinearValue = value;
 
 		// Emit intermediate state transitions
-		float delta = 0.1;
+		float delta = 0.01;
 		float intermediaLinearValue = mPreviousLinearValue;
 		if (mPreviousLinearValue < mLinearValue) {
 			// walk right
