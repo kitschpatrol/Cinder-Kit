@@ -29,8 +29,8 @@ float LinearStateMachine::getLinearValue() const {
 	return mLinearValue;
 }
 
-void LinearStateMachine::setLinearValue(float value) {
-	if (mLinearValue != value) {
+void LinearStateMachine::setLinearValue(float value, bool forceUpdate) {
+	if (forceUpdate || (mLinearValue != value)) {
 		mPreviousLinearValue = mLinearValue;
 		mLinearValue = value;
 

@@ -31,7 +31,7 @@ public:
 	~LinearStateMachine();
 
 	float getLinearValue() const;
-	void setLinearValue(float value);
+	void setLinearValue(float value, bool forceUpdate = false);
 
 	// array of pairs defining the "in" and "out" point of an active segment of the linear range.
 	// (4, 4) would transition in from 3->4, and out from 4->5
@@ -40,8 +40,7 @@ public:
 	void setActiveRange(Range ranges); // convenience for setting single range
 
 	void addActiveRange(Range range); // convenience for accumulating ranges, automatically merges with existing
-	
-	
+
 	const State getPreviousState() const;
 	const State getCurrentState() const;
 	float getProgress() const;
