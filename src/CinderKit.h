@@ -18,7 +18,9 @@
 #include <ctime>		// struct std::tm
 #include <iomanip>	// std::get_time
 #include <iostream> // std::cin, std::cout
+#include <iterator>
 #include <map>
+#include <random>
 #include <sstream>
 #define KP_WATCH(VARIABLE_TO_WATCH) (CI_LOG_V(#VARIABLE_TO_WATCH << ": " << VARIABLE_TO_WATCH));
 #define KP_LOG_FUNCTION (CI_LOG_V(__PRETTY_FUNCTION__ << " on thread " << std::this_thread::get_id()));
@@ -118,6 +120,20 @@ static ci::vec2 roundTo(const ci::vec2 &point, float roundStep) {
 static float getWave(float frequencySeconds = 1.0, float minAmplitude = 0.0, float maxAmplitude = 1.0, float timeOffset = 0.0) {
 	ci::math<float>::sin(1.0);
 	return ci::lmap(sinf(((static_cast<float>(ci::app::getElapsedSeconds()) + timeOffset) / frequencySeconds) * M_PI * 2), -1.0f, 1.0f, minAmplitude, maxAmplitude);
+}
+
+template <typename Iter, typename RandomGenerator>
+static Iter randomElement(Iter start, Iter end, RandomGenerator &g) {
+	std::uniform_int_distribution<> dis(0, std::distance(start, end) - 1);
+	std::advance(start, dis(g));
+	return start;
+}
+
+template <typename Iter>
+static Iter randomElement(Iter start, Iter end) {
+	static std::random_device rd;
+	static std::mt19937 gen(rd());
+	return randomElement(start, end, gen);
 }
 
 static ci::Color getRandomColor(float saturation = 1.0f, float brightness = 1.0f) {
