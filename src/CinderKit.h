@@ -10,9 +10,6 @@
 #include "cinder/gl/gl.h"
 
 #include "boost/algorithm/string.hpp"
-#include "boost/archive/iterators/base64_from_binary.hpp"
-#include "boost/archive/iterators/binary_from_base64.hpp"
-#include "boost/archive/iterators/transform_width.hpp"
 #include "boost/uuid/uuid.hpp"
 #include "boost/uuid/uuid_generators.hpp"
 #include "boost/uuid/uuid_io.hpp"
@@ -226,20 +223,6 @@ static ci::JsonTree toJson(std::string key, ci::vec2 value) {
 
 static ci::vec2 fromJson(const ci::JsonTree &json) {
 	return ci::vec2(json["x"].getValue<float>(), json["y"].getValue<float>());
-}
-
-// TODO test this later
-static std::string decode64(const std::string &val) {
-	using namespace boost::archive::iterators;
-	using It = transform_width<binary_from_base64<std::string::const_iterator>, 8, 6>;
-	return boost::algorithm::trim_right_copy_if(std::string(It(std::begin(val)), It(std::end(val))), [](char c) { return c == '\0'; });
-}
-
-static std::string encode64(const std::string &val) {
-	using namespace boost::archive::iterators;
-	using It = base64_from_binary<transform_width<std::string::const_iterator, 6, 8>>;
-	auto tmp = std::string(It(std::begin(val)), It(std::end(val)));
-	return tmp.append((3 - val.size() % 3) % 3, '=');
 }
 
 static ci::vec2 polarToCartesian(float radius, float theta) {
