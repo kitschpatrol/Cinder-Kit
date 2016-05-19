@@ -7,10 +7,9 @@
 #pragma once
 
 #include "EasyHttpSession.h"
-#include "cinder/Cinder.h"
 
-namespace kp {
 namespace kit {
+namespace net {
 
 typedef std::shared_ptr<class EasyHttp> EasyHttpRef;
 
@@ -41,5 +40,5 @@ private:
 	void removeSession(EasyHttpSessionRef session);
 };
 
+} // namespace net
 } // namespace kit
-} // namespace kp

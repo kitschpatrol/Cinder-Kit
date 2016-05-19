@@ -1,17 +1,16 @@
 #include "EasyHttpSession.h"
 
 #include "HttpInterface.h"
-#include "cinder/Cinder.h"
 #include "cinder/Log.h"
 #include "cinder/Utilities.h"
 #include "cinder/app/App.h"
 
 using namespace ci;
-using namespace ci::app;
+using namespace app;
 using namespace std;
 
-namespace kp {
 namespace kit {
+namespace net {
 
 // TODO fix retain cycles with
 // pass into lambdas explicitly
@@ -20,9 +19,9 @@ EasyHttpSessionRef EasyHttpSession::create() {
 	return EasyHttpSessionRef(new EasyHttpSession())->shared_from_this();
 }
 
-void EasyHttpSession::request(HttpRequest request, uint16_t port,									//
-															std::function<void(HttpResponse response)> success, //
-															std::function<void(std::string error)> failure) {
+void EasyHttpSession::request(HttpRequest request, uint16_t port,						 //
+															function<void(HttpResponse response)> success, //
+															function<void(string error)> failure) {
 	if (mSession && mSession->getSocket()->is_open()) {
 		CI_LOG_E("Request in progress. Aborting. This should not be possible!");
 		return;
@@ -92,7 +91,7 @@ void EasyHttpSession::onSessionWrite(size_t bytesTransferred) {
 	mSession->read();
 }
 
-void EasyHttpSession::onSessionRead(ci::BufferRef buffer) {
+void EasyHttpSession::onSessionRead(BufferRef buffer) {
 	verboseLog(toString(buffer->getSize()) + " bytes read");
 
 	if (!mHttpResponse.hasHeader()) {
@@ -149,11 +148,11 @@ void EasyHttpSession::conclude() {
 	}
 }
 
-void EasyHttpSession::verboseLog(std::string message) {
+void EasyHttpSession::verboseLog(string message) {
 	if (isAbsurdlyVerboseLoggingEnabled) {
 		CI_LOG_V(message);
 	}
 }
 
+} // namespace net
 } // namespace kit
-} // namespace kp

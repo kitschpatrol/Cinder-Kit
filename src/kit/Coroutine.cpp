@@ -1,10 +1,7 @@
-#include "CinderKitCoroutine.h"
-
+#include "Coroutine.h"
+#include "cinder/Log.h"
 #include <thread>
 
-#include "cinder/Log.h"
-
-namespace kp {
 namespace kit {
 
 // This is thrown when the outer thread stop():s the coroutine.
@@ -162,5 +159,4 @@ void CoroutineSet::poll(double dt) {
 	}
 }
 
-} // namespace kp
 } // namespace kit

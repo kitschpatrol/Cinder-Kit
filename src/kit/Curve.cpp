@@ -25,11 +25,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CurveUtils.h"
-#include "cinder/Vector.h"
+#include "Curve.h"
 
-namespace kp {
-namespace curve {
+namespace kit {
 
 using namespace cinder;
 using namespace std;
@@ -118,5 +116,4 @@ vec3 SplineArcLengthParameterizer::getPosition(float s) const {
 	return mSpline.getPosition(getTime(s));
 }
 
-} // namespace curve
-} // namespace kp
+} // namespace kit

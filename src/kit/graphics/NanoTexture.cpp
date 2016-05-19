@@ -8,6 +8,9 @@
 
 #include "NanoTexture.h"
 
+namespace kit {
+namespace graphics {
+
 NanoTextureRef NanoTexture::create() {
 	return NanoTexture::create(512, 512);
 }
@@ -38,7 +41,7 @@ void NanoTexture::setup(float width, float height) {
 	ci::gl::Fbo::Format fboFormat;
 	fboFormat.enableStencilBuffer();
 	fboFormat.setColorTextureFormat(textureFormat);
-	
+
 	mFbo = ci::gl::Fbo::create(width, height, fboFormat);
 
 	mCtx = std::make_shared<ci::nvg::Context>(ci::nvg::createContextGL()); // todo unique?
@@ -62,3 +65,6 @@ void NanoTexture::renderWithFunction(const std::function<void(ci::nvg::Context &
 const ci::gl::TextureRef NanoTexture::getTexture() const {
 	return mTexture;
 }
+
+} // namespace graphics
+} // namespace kit

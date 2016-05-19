@@ -6,13 +6,12 @@
 //
 #pragma once
 
-#include "cinder/Cinder.h"
+//#include "cinder/Cinder.h"
 #include "cinder/gl/GlslProg.h"
-#include "cinder/gl/gl.h"
+#include "cinder/gl/Texture.h"
 
-namespace kp {
 namespace kit {
-namespace gl {
+namespace graphics {
 
 class GlslProgRef;
 
@@ -59,6 +58,5 @@ private:
 	static const std::string vertexShaderGL3;
 };
 
-} // namespace gl
+} // namespace graphics
 } // namespace kit
-} // namespace kp

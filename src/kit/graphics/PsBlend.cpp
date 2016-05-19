@@ -12,9 +12,8 @@
 #include "cinder/gl/GlslProg.h"
 #include "cinder/gl/gl.h"
 
-namespace kp {
 namespace kit {
-namespace gl {
+namespace graphics {
 
 #define STRINGIFY(x) #x
 
@@ -521,6 +520,5 @@ const std::string PsBlend::vertexShaderGL3 = "#version 150\n" STRINGIFY(
 
 //
 
-} // namespace gl
 } // namespace kit
-} // namespace kp
+} // namespace graphics

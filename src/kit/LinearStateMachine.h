@@ -9,7 +9,6 @@
 #include "cinder/Cinder.h"
 #include "cinder/Signals.h"
 
-namespace kp {
 namespace kit {
 
 typedef std::shared_ptr<class LinearStateMachine> LinearStateMachineRef;
@@ -76,4 +75,3 @@ private:
 };
 
 } // namespace kit
-} // namespace kp

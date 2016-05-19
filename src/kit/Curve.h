@@ -25,15 +25,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//#include "Pockets.h"
+#pragma once
+
 #include "cinder/BSpline.h"
 #include "cinder/Vector.h"
 #include <vector>
 
-#pragma once
-
-namespace kp {
-namespace curve {
+namespace kit {
 
 /**
 returns a vector of points and control points suitable for constructing
@@ -72,5 +70,4 @@ private:
 	ci::BSpline3f mSpline;
 };
 
-} // namespace curve
-} // namespace kp
+} // namespace kit

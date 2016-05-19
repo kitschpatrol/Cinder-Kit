@@ -6,14 +6,14 @@
 
 #include "CinderAsio.h"
 
-#include "cinder/Cinder.h"
+//#include "cinder/Cinder.h"
 
 #include "HttpRequest.h"
 #include "HttpResponse.h"
 #include "TcpClient.h"
 
-namespace kp {
 namespace kit {
+namespace net {
 
 typedef std::shared_ptr<class EasyHttpSession> EasyHttpSessionRef;
 

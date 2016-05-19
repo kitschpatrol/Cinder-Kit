@@ -29,8 +29,11 @@
 #pragma once
 
 #include "ci_nanovg_gl.hpp"
-#include "cinder/Cinder.h"
+//#include "cinder/Cinder.h"
 #include "cinder/gl/gl.h"
+
+namespace kit {
+namespace graphics {
 
 typedef std::shared_ptr<class NanoTexture> NanoTextureRef;
 
@@ -57,3 +60,6 @@ private:
 	ci::gl::FboRef mFbo;
 	std::shared_ptr<ci::nvg::Context> mCtx;
 };
+
+} // namespace graphics
+} // namespace kit

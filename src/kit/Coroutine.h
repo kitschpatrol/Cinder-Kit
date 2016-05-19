@@ -25,7 +25,6 @@ Example usage can be found in examples/ folder.
 #include <string>
 #include <vector>
 
-namespace kp {
 namespace kit {
 
 class InnerControl;
@@ -136,5 +135,4 @@ private:
 	std::vector<std::shared_ptr<Coroutine>> _list;
 };
 
-} // namespace kp
 } // namespace kit

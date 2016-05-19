@@ -10,9 +10,8 @@
 
 #include "cinder/cairo/Cairo.h"
 
-namespace kp {
 namespace kit {
-namespace cairo {
+namespace graphics {
 
 static void appendPolyline(ci::cairo::Context &context, const ci::PolyLine2f &polyline) {
 	if (!polyline.getPoints().empty()) {
@@ -28,6 +27,5 @@ static void appendPolyline(ci::cairo::Context &context, const ci::PolyLine2f &po
 	}
 }
 
-} // namespace cairo
+} // namespace graphics
 } // namespace kit
-} // namespace kp

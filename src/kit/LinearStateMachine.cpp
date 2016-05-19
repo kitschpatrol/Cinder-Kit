@@ -6,11 +6,13 @@
 
 #include "LinearStateMachine.h"
 
-#include "cinder/Cinder.h"
+//#include "cinder/Cinder.h"
 #include "cinder/Log.h"
 #include "cinder/app/App.h"
 
-namespace kp {
+using namespace std;
+using namespace ci;
+
 namespace kit {
 
 LinearStateMachineRef LinearStateMachine::create() {
@@ -53,18 +55,18 @@ void LinearStateMachine::setLinearValue(float value, bool forceUpdate) {
 
 		// Calculate final state and progress
 
-		std::pair<State, float> pair = calculateStateAndProgressForValue(mLinearValue);
+		pair<State, float> pair = calculateStateAndProgressForValue(mLinearValue);
 
 		setState(pair.first);
 		setProgress(pair.second);
 	}
 }
 
-const std::vector<LinearStateMachine::Range> &LinearStateMachine::getActiveRanges() const {
+const vector<LinearStateMachine::Range> &LinearStateMachine::getActiveRanges() const {
 	return mActiveRanges;
 }
 
-void LinearStateMachine::setActiveRanges(std::vector<Range> ranges) {
+void LinearStateMachine::setActiveRanges(vector<Range> ranges) {
 	if (mActiveRanges != ranges) {
 		mActiveRanges = ranges;
 		// todo refresh state?
@@ -119,7 +121,7 @@ float LinearStateMachine::getProgress() const {
 	return mCurentStateProgress;
 }
 
-std::pair<LinearStateMachine::State, float> LinearStateMachine::calculateStateAndProgressForValue(float value) {
+pair<LinearStateMachine::State, float> LinearStateMachine::calculateStateAndProgressForValue(float value) {
 	// Assume nothing's around
 	State state = State::STEADY_OUT;
 	float progress = 0.0;
@@ -131,23 +133,23 @@ std::pair<LinearStateMachine::State, float> LinearStateMachine::calculateStateAn
 
 		if (value > leftEdge && value < range.first) {
 			// Transitioning in
-			progress = ci::lmap(value, leftEdge, range.first, 0.0f, 1.0f);
+			progress = lmap(value, leftEdge, range.first, 0.0f, 1.0f);
 			state = State::TRANSITIONING_IN;
 			break;
 		} else if (value >= range.first && value <= range.second) {
 			// Steady in
-			progress = 1.0; // ci::lmap(value, range.first, range.second, 0.0f, 1.0f);
+			progress = 1.0; // lmap(value, range.first, range.second, 0.0f, 1.0f);
 			state = State::STEADY_IN;
 			break;
 		} else if (value > range.second && value < rightEdge) {
 			// Transitioning Out, flip progress because it's convenient to treat transitioning in and out as the same thing most of the time
-			progress = ci::lmap(value, range.second, rightEdge, 1.0f, 0.0f);
+			progress = lmap(value, range.second, rightEdge, 1.0f, 0.0f);
 			state = State::TRANSITIONING_OUT;
 			break;
 		}
 	}
 
-	return std::make_pair(state, progress);
+	return make_pair(state, progress);
 }
 
 void LinearStateMachine::setProgress(float progress) {
@@ -177,7 +179,7 @@ void LinearStateMachine::setState(State state) {
 	}
 }
 
-std::string LinearStateMachine::getStringFromState(LinearStateMachine::State state) {
+string LinearStateMachine::getStringFromState(LinearStateMachine::State state) {
 	switch (state) {
 		case LinearStateMachine::State::TRANSITIONING_IN:
 			return "TRANSITIONING_IN";
@@ -191,4 +193,3 @@ std::string LinearStateMachine::getStringFromState(LinearStateMachine::State sta
 }
 
 } // namespace kit
-} // namespace kp

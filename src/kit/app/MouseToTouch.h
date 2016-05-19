@@ -11,7 +11,6 @@
 #include "cinder/App/App.h"
 #include "cinder/Cinder.h"
 
-namespace kp {
 namespace kit {
 namespace app {
 
@@ -38,4 +37,3 @@ protected:
 
 } // namespace app
 } // namespace kit
-} // namespace kp

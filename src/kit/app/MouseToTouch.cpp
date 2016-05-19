@@ -9,7 +9,6 @@
 #include "MouseToTouch.h"
 #include "cinder/Log.h"
 
-namespace kp {
 namespace kit {
 namespace app {
 
@@ -37,8 +36,7 @@ void MouseToTouch::setIsEnabled(bool value) {
 	mIsEnabled = value;
 }
 
-bool MouseToTouch::getIsEnabled()
-{
+bool MouseToTouch::getIsEnabled() {
 	return mIsEnabled;
 }
 
@@ -70,16 +68,15 @@ void MouseToTouch::onMouseDragEvent(ci::app::MouseEvent event) {
 
 void MouseToTouch::onMouseUpEvent(ci::app::MouseEvent event) {
 	// On, isLeftDown is false on mouse up.
-	//if (event.isLeftDown()) {
-		ci::app::TouchEvent::Touch touch = ci::app::TouchEvent::Touch(event.getPos(), mLastMousePosition, -1, ci::app::getElapsedSeconds(), nullptr);
-		std::vector<ci::app::TouchEvent::Touch> touches;
-		touches.push_back(touch);
+	// if (event.isLeftDown()) {
+	ci::app::TouchEvent::Touch touch = ci::app::TouchEvent::Touch(event.getPos(), mLastMousePosition, -1, ci::app::getElapsedSeconds(), nullptr);
+	std::vector<ci::app::TouchEvent::Touch> touches;
+	touches.push_back(touch);
 
-		ci::app::TouchEvent touchEvent = ci::app::TouchEvent(ci::app::WindowRef(), touches);
-		ci::app::getWindow()->emitTouchesEnded(&touchEvent);
+	ci::app::TouchEvent touchEvent = ci::app::TouchEvent(ci::app::WindowRef(), touches);
+	ci::app::getWindow()->emitTouchesEnded(&touchEvent);
 	//}
 }
 
 } // namespace app
 } // namespace kit
-} // namespace kp
