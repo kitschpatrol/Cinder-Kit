@@ -1,5 +1,8 @@
 #pragma once
 
+#include "cinder/gl/scoped.h"
+#include "cinder/gl/draw.h"
+
 namespace kit {
 namespace graphics {
 
