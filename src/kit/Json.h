@@ -23,7 +23,7 @@ static std::pair<T, U> fromJson(const ci::JsonTree &json, bool flag = false) {
 
 // Vectors
 static ci::JsonTree toJson(ci::vec2 value) {
-	ci::JsonTree object = ci::JsonTree::makeObj ect();
+	ci::JsonTree object = ci::JsonTree::makeObject();
 	object.addChild(ci::JsonTree("x", value.x));
 	object.addChild(ci::JsonTree("y", value.y));
 	return object;
