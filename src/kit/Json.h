@@ -1,5 +1,8 @@
 #pragma once
 
+#include "cinder/Vector.h"
+#include "cinder/Json.h"
+
 namespace kit {
 
 // there must be a better place / way

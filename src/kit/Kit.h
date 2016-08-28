@@ -31,6 +31,8 @@
 
 // for machine name resolution
 #ifdef CINDER_MSW
+// ugh include winsock for asio error
+#include <WinSock2.h>
 #include <Windows.h>
 #include <tchar.h>
 #else
