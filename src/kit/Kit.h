@@ -10,9 +10,9 @@
 //#include "cinder/gl/gl.h"
 //
 //#include "boost/algorithm/string.hpp"
-#include "boost/uuid/uuid.hpp"
-#include "boost/uuid/uuid_generators.hpp"
-#include "boost/uuid/uuid_io.hpp"
+//#include "boost/uuid/uuid.hpp"
+//#include "boost/uuid/uuid_generators.hpp"
+//#include "boost/uuid/uuid_io.hpp"
 //#include <chrono>
 #include <complex>
 //#include <ctime>		// struct std::tm
@@ -97,6 +97,7 @@ static ci::vec2 getRandomPoint(float xMax = 1.0f, float yMax = 1.0f) {
 	return ci::vec2(ci::Rand::randFloat() * xMax, ci::Rand::randFloat() * yMax);
 }
 
+/*
 static boost::uuids::uuid getUUID() {
 	return boost::uuids::random_generator()();
 }
@@ -104,6 +105,7 @@ static boost::uuids::uuid getUUID() {
 static std::string getUUIDString() {
 	return boost::uuids::to_string(getUUID());
 }
+*/
 
 static ci::vec2 polarToCartesian(float radius, float theta) {
 	std::complex<double> cartesian = std::polar(radius, theta);
