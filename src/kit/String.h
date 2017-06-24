@@ -13,25 +13,27 @@ static std::string pluralize(T count, std::string singular, std::string plural) 
 	return (count == 1) ? singular : plural;
 }
 
-// From Reza Ali's Cinder UI... issue son windows?
+// From Reza Ali's Cinder UI... issues on windows?
+
 template <typename T>
 std::string toString(T value, int precision, int width, char fill) {
 	std::ostringstream out;
-	out << std::fixed << std::setfill(fill) << std::setw(width) << std::setprecision(precision) << ((std::abs<T>(value) < ((1.0 / pow(10.0, precision + 1)) * 5.0)) ? 0.0 : value);
+	out << std::fixed << std::setfill(fill) << std::setw(width) << std::setprecision(precision) << ((std::abs(value) < ((1.0 / pow(10.0, precision + 1)) * 5.0)) ? 0.0 : value);
 	return out.str();
 }
 
 template <typename T>
 std::string toString(T value, int precision, char fill) {
 	std::ostringstream out;
-	out << std::fixed << std::setfill(fill) << std::setprecision(precision) << ((std::abs<T>(value) < ((1.0 / pow(10.0, precision + 1)) * 5.0)) ? 0.0 : value);
+	out << std::fixed << std::setfill(fill) << std::setprecision(precision) << ((std::abs(value) < ((1.0 / pow(10.0, precision + 1)) * 5.0)) ? 0.0 : value);
 	return out.str();
 }
+
 
 template <typename T>
 std::string toString(T value, int precision) {
 	std::ostringstream out;
-	out << std::fixed << std::setfill('0') << std::setprecision(precision) << ((std::abs<T>(value) < ((1.0 / pow(10.0, precision + 1)) * 5.0)) ? 0.0 : value);
+	out << std::fixed << std::setfill('0') << std::setprecision(precision) << ((std::abs(value) < ((1.0 / pow(10.0, precision + 1)) * 5.0)) ? 0.0 : value);
 	return out.str();
 }
 
