@@ -87,7 +87,7 @@ void LinearStateMachine::addActiveRange(Range range) {
 
 	if (foundExistingRange) {
 		// extend existing range
-		mActiveRanges[rangeIndex].second = range.first;
+		mActiveRanges[rangeIndex].second = range.second;
 	} else {
 		// add new range
 		mActiveRanges.push_back(range);

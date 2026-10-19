@@ -520,5 +520,5 @@ const std::string PsBlend::vertexShaderGL3 = "#version 150\n" STRINGIFY(
 
 //
 
-} // namespace kit
 } // namespace graphics
+} // namespace kit

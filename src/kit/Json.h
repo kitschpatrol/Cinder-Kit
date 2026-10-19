@@ -17,7 +17,7 @@ static ci::JsonTree toJson(std::string key, std::pair<T, U> value) {
 }
 
 // hmm have to specify return type manually
-//		std::pair<float, float> test = kp::kit::fromJsonPair<float, float>(json);
+//		std::pair<float, float> test = kit::fromJson<float, float>(json);
 // http://stackoverflow.com/questions/26081814/can-c-templates-infer-return-type
 template <typename T, typename U>
 static std::pair<T, U> fromJson(const ci::JsonTree &json, bool flag = false) {

@@ -138,7 +138,7 @@ void EasyHttpSession::onSessionError(string err, size_t bytesTransferred) {
 }
 
 void EasyHttpSession::conclude() {
-	// TODo move this elsewhere?
+	// TODO move this elsewhere?
 	if (mSuccess && mSuccessCallback) {
 		CI_LOG_V("Request to " << mHttpRequest.getOptions() << " " << mHttpRequest.getUri() << " succeeded in " << (getElapsedSeconds() - mStartTime) << " seconds.");
 		mSuccessCallback(mHttpResponse);

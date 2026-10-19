@@ -113,7 +113,7 @@ static ci::vec2 polarToCartesian(float radius, float theta) {
 }
 
 static ci::vec2 cartesianToPolar(ci::vec2 cartesian) {
-	return ci::vec2(glm::length(cartesian), std::atan2(cartesian.x, cartesian.y));
+	return ci::vec2(glm::length(cartesian), std::atan2(cartesian.y, cartesian.x));
 }
 
 static std::string getMachineName(bool includeDomain = false) {
@@ -137,7 +137,7 @@ static std::string getMachineName(bool includeDomain = false) {
 
 	std::string nameString = std::string(name);
 
-	if (includeDomain) {
+	if (!includeDomain) {
 		// skip domains after the dot
 		std::size_t pos = nameString.find(".");
 

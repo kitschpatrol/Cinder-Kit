@@ -64,5 +64,5 @@ private:
 	void verboseLog(std::string message);
 };
 
+} // namespace net
 } // namespace kit
-} // namespace kp

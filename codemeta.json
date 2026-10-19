@@ -1,0 +1,64 @@
+{
+  "@context": "https://w3id.org/codemeta/3.1",
+  "@type": "SoftwareSourceCode",
+  "name": "Cinder-Kit",
+  "identifier": "com.kitschpatrol.kit",
+  "version": "1.0.0",
+  "description": "CinderBlock for small utilities covering graphics, input, HTTP, asynchronous tasks, JSON, strings, colors, time, curves, and other odds and ends.",
+  "author": {
+    "@type": "Person",
+    "email": "eric@ericmika.com",
+    "name": "Eric Mika",
+    "url": "https://ericmika.com"
+  },
+  "keywords": [
+    "cinder",
+    "cinderblock",
+    "utilities",
+    "http-client",
+    "json",
+    "nanovg"
+  ],
+  "programmingLanguage": "C++",
+  "operatingSystem": [
+    "macOS",
+    "Windows"
+  ],
+  "url": "https://github.com/kitschpatrol/Cinder-Kit",
+  "codeRepository": "https://github.com/kitschpatrol/Cinder-Kit.git",
+  "issueTracker": "https://github.com/kitschpatrol/Cinder-Kit/issues",
+  "license": "https://spdx.org/licenses/MIT",
+  "dateCreated": "2016-01-16",
+  "softwareRequirements": [
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "Cinder",
+      "codeRepository": "https://github.com/cinder/Cinder.git",
+      "version": "0.9.2dev"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "Cinder-Asio",
+      "identifier": "asio.bantherewind.com",
+      "codeRepository": "https://github.com/BanTheRewind/Cinder-Asio.git"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "Cinder-Protocol",
+      "identifier": "protocol.bantherewind.com",
+      "codeRepository": "https://github.com/kitschpatrol/Cinder-Protocol.git"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "Cinder-NanoVG",
+      "identifier": "org.libcinder.Cinder-NanoVG",
+      "codeRepository": "https://github.com/notlion/Cinder-NanoVG.git"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "Cairo",
+      "identifier": "org.libcinder.cairo",
+      "codeRepository": "https://github.com/cinder/Cinder.git"
+    }
+  ]
+}

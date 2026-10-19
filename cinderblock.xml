@@ -1,19 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <cinder>
 	<block
-	name="Kit"
-	id="com.kitschpatrol.kit"
-	git="https://github.com/kitschpatrol/Cinder-Kit.git"
-	url="https://github.com/kitschpatrol/Cinder-Kit"
-	author="Eric Mika."
-	summary="Odds and ends."
-	version="1.0.0"
-	license="MIT + MIT"
+		name="Kit"
+		id="com.kitschpatrol.kit"
+		git="https://github.com/kitschpatrol/Cinder-Kit.git"
+		url="https://github.com/kitschpatrol/Cinder-Kit"
+		author="Eric Mika"
+		summary="CinderBlock for small utilities covering graphics, input, HTTP, asynchronous tasks, JSON, strings, colors, time, curves, and other odds and ends."
+		version="1.0.0"
+		license="MIT"
 	>
 		<supports os="macosx" />
-		<supports os="msw" />	
-		<headerPattern>src/*.h</headerPattern>
-		<sourcePattern>src/*.cpp</sourcePattern>
+		<supports os="msw" />
+
+		<!-- HTTP helpers -->
+		<requires>asio.bantherewind.com</requires>
+		<requires>protocol.bantherewind.com</requires>
+
+		<!-- Graphics helpers -->
+		<requires>org.libcinder.Cinder-NanoVG</requires>
+		<requires>org.libcinder.cairo</requires>
+
+		<headerPattern>src/kit/*.h</headerPattern>
+		<headerPattern>src/kit/app/*.h</headerPattern>
+		<headerPattern>src/kit/graphics/*.h</headerPattern>
+		<headerPattern>src/kit/net/*.h</headerPattern>
+		<sourcePattern>src/kit/*.cpp</sourcePattern>
+		<sourcePattern>src/kit/app/*.cpp</sourcePattern>
+		<sourcePattern>src/kit/graphics/*.cpp</sourcePattern>
+		<sourcePattern>src/kit/net/*.cpp</sourcePattern>
 		<includePath system="false">src</includePath>
+
+		<file>readme.md</file>
+		<file>license.txt</file>
 	</block>
 </cinder>

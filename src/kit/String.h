@@ -1,6 +1,12 @@
 #pragma once
 
 #include "boost/algorithm/string.hpp"
+#include "cinder/Rect.h"
+#include "cinder/Vector.h"
+#include <cmath>
+#include <iomanip>
+#include <sstream>
+#include <string>
 
 namespace kit {
 
@@ -43,7 +49,7 @@ static int codeStringPadWith = 4; // does not work?
 
 static std::string toCodeString(ci::vec2 value) {
 
-	return "ci::vec2(" + toString(value.x, codeStringPrecision, codeStringPadWith, '0') + " ," + toString(value.y, codeStringPrecision, codeStringPadWith, '0') + ")";
+	return "ci::vec2(" + toString(value.x, codeStringPrecision, codeStringPadWith, '0') + ", " + toString(value.y, codeStringPrecision, codeStringPadWith, '0') + ")";
 }
 
 static std::string toCodeString(ci::Rectf value) {

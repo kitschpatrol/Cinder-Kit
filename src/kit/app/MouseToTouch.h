@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "cinder/App/App.h"
+#include "cinder/app/App.h"
 #include "cinder/Cinder.h"
 
 namespace kit {

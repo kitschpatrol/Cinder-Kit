@@ -67,7 +67,7 @@ void MouseToTouch::onMouseDragEvent(ci::app::MouseEvent event) {
 }
 
 void MouseToTouch::onMouseUpEvent(ci::app::MouseEvent event) {
-	// On, isLeftDown is false on mouse up.
+	// On Windows, isLeftDown is false on mouse up.
 	// if (event.isLeftDown()) {
 	ci::app::TouchEvent::Touch touch = ci::app::TouchEvent::Touch(event.getPos(), mLastMousePosition, -1, ci::app::getElapsedSeconds(), nullptr);
 	std::vector<ci::app::TouchEvent::Touch> touches;

@@ -1,5 +1,10 @@
 #pragma once
 
+#include <ctime>
+#include <iomanip>
+#include <sstream>
+#include <string>
+
 namespace kit {
 
 // http://en.cppreference.com/w/cpp/io/manip/get_time

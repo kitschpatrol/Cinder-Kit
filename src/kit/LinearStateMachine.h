@@ -24,7 +24,7 @@ public:
 
 	typedef std::pair<float, float> Range;
 	typedef ci::signals::Signal<void(LinearStateMachine::State /*currentState*/, float /*stateProgress*/)> SignalStateProgress;
-	typedef ci::signals::Signal<void(LinearStateMachine::State /*fromState*/, LinearStateMachine::State /*toState*/)> SignalStateChange;
+	typedef ci::signals::Signal<void(LinearStateMachine::State /*toState*/, LinearStateMachine::State /*fromState*/)> SignalStateChange;
 
 	static LinearStateMachineRef create();
 	~LinearStateMachine();

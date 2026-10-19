@@ -1,17 +1,17 @@
 // From:
 // http://www.ilikebigbits.com/blog/2016/3/20/coroutines-for-games
 // https://github.com/emilk/emilib
-// License?
+// License: public domain (see the emilib readme)
 
 /*
 Coroutine-ish feature implemented using a thread.
-Useful for implmenting a script of some sort where a state-machine would be cumbersome.
+Useful for implementing a script of some sort where a state-machine would be cumbersome.
 The coroutine (inner) thread is executed only when the owning (outer) thread is paused, and vice versa.
 
 The coroutine has helper functions for waiting for a certain amount of time etc.
 To keep track of the time, a time delta must be supplied when polling a coroutine.
 This allows the library user to for instance slow down time by supplying smaller time deltas
-then the wall clock time.
+than the wall clock time.
 
 Example usage can be found in examples/ folder.
 */
@@ -21,6 +21,7 @@ Example usage can be found in examples/ folder.
 #include <atomic>
 #include <condition_variable>
 #include <functional>
+#include <memory>
 #include <mutex>
 #include <string>
 #include <vector>
@@ -35,7 +36,7 @@ class InnerControl;
 class Coroutine {
 public:
 	// A running count of all coroutines will be appended to debug_name.
-	// The resulting name isused to name the inner thead and will also be written on errors.
+	// The resulting name is used to name the inner thread and will also be written on errors.
 	Coroutine(const char *debug_name, std::function<void(InnerControl &ic)> fun);
 
 	// Will stop() the coroutine, if not already done().
@@ -115,7 +116,7 @@ public:
 	bool empty() const {
 		return _list.empty();
 	}
-	auto size() const {
+	size_t size() const {
 		return _list.size();
 	}
 
